@@ -25,7 +25,10 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(Plotter Plotter.cpp )
+#add_executable(Plotter src/main.cpp )
+
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "src/*.cpp")
+add_executable(Plotter ${SOURCES})
 
 pico_set_program_name(Plotter "Plotter")
 pico_set_program_version(Plotter "0.1")

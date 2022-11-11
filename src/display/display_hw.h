@@ -6,7 +6,6 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
-//#include "i2c-display-lib.h"
 
 #define I2C_PORT i2c1
 
@@ -139,7 +138,7 @@ void lcd_home() { lcd_setCursor(0, 0); }
 
 void lcd_init(uint8_t sda, uint8_t scl)
 {
-    i2c_init(I2C_PORT, 10 * 1000);
+    i2c_init(I2C_PORT, 100 * 1000);
     gpio_set_function(sda, GPIO_FUNC_I2C);
     gpio_set_function(scl, GPIO_FUNC_I2C);
     gpio_pull_up(sda);
@@ -157,6 +156,14 @@ void lcd_init(uint8_t sda, uint8_t scl)
     lcd_send_byte(LCD_FUNCTIONSET | LCD_2LINE, LCD_COMMAND, 1);
     lcd_send_byte(LCD_DISPLAYCONTROL | LCD_DISPLAYON, LCD_COMMAND, 1);
     lcd_clear();
+}
+
+void lcd_deinit(uint8_t sda, uint8_t scl)
+{
+    lcd_clear();
+    i2c_deinit(I2C_PORT);
+    gpio_deinit(sda);
+    gpio_deinit(scl);
 }
 
 #endif
