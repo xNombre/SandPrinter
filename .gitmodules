@@ -1,3 +1,6 @@
 [submodule "pico-sdk"]
 	path = pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk
+[submodule "sdcard-spi"]
+	path = sdcard-spi
+	url = https://github.com/xNombre/no-OS-FatFS-SD-SPI-RPi-Pico
