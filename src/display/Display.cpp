@@ -2,7 +2,7 @@
 
 #include "display_hw.h"
 
-Display::Display(unsigned sda_gpio, unsigned scl_gpio)
+Display::Display(uint8_t sda_gpio, uint8_t scl_gpio)
     : sda_gpio(sda_gpio), scl_gpio(scl_gpio)
 {
     lcd_init(sda_gpio, scl_gpio);
@@ -14,12 +14,12 @@ Display::~Display()
     lcd_deinit(sda_gpio, scl_gpio);
 }
 
-unsigned Display::get_cur_pos() const
+uint8_t Display::get_cur_pos() const
 {
     return pos;
 }
 
-unsigned Display::get_cur_line() const
+uint8_t Display::get_cur_line() const
 {
     return line;
 }
@@ -43,11 +43,17 @@ void Display::print(const std::string &str)
 }
 
 #if SUPPORT_DISPLAY_SCROLL
-void Display::print_scroll(const std::string &str)
+void Display::print_scroll(const std::string &str, ScrollDirection dir)
 {
     clear();
-    print_line(last_line);
-    print_line(str);
+    if (dir == ScrollDirection::DOWN) {
+        print_line(last_line);
+        print_line(str);
+    }
+    else {
+        print_line(str);
+        print_line(last_line);
+    }
 }
 #endif
 

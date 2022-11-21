@@ -1,7 +1,7 @@
 #pragma once
 
 #include <stdint.h>
-
+#include "hardware/i2c.h"
 class Constants {
 public:
     // ***************** GPIOs *********************************
@@ -36,6 +36,8 @@ public:
     // ***************** DISPLAY *******************************
     static inline const uint8_t DISPLAY_MAX_CHAR = 16;
     static inline const uint8_t DISPLAY_MAX_LINE = 2;
+    static inline const uint8_t DISPLAY_I2C_ADDRESS = 0x27;
+    static inline i2c_inst_t* const DISPLAY_I2C_PORT = i2c1;
     // *********************************************************
 
     // ***************** BUTTON *******************************

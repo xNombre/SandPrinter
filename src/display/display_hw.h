@@ -7,7 +7,7 @@
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
 
-#define I2C_PORT i2c1
+#include "../config/Constants.hpp"
 
 //
 // Variables
@@ -50,7 +50,8 @@ const int LCD_ENABLE_BIT = 0x04;
 const int LCD_CHARACTER = 1;
 const int LCD_COMMAND = 0;
 
-static int lcd_addr = 0x27;
+const uint8_t lcd_addr = Constants::DISPLAY_I2C_ADDRESS;
+i2c_inst_t* const i2c_port = Constants::DISPLAY_I2C_PORT;
 
 //
 // Functions
@@ -59,12 +60,7 @@ static int lcd_addr = 0x27;
 /* Quick helper function for single byte transfers */
 void i2c_write_byte(uint8_t val)
 {
-    i2c_write_blocking(I2C_PORT, lcd_addr, &val, 1, false);
-}
-
-void lcd_setAddr(uint8_t addr)
-{
-    lcd_addr = addr;
+    i2c_write_blocking(i2c_port, lcd_addr, &val, 1, false);
 }
 
 void lcd_toggle_enable(uint8_t val)
@@ -138,7 +134,7 @@ void lcd_home() { lcd_setCursor(0, 0); }
 
 void lcd_init(uint8_t sda, uint8_t scl)
 {
-    i2c_init(I2C_PORT, 100 * 1000);
+    i2c_init(i2c_port, 100 * 1000);
     gpio_set_function(sda, GPIO_FUNC_I2C);
     gpio_set_function(scl, GPIO_FUNC_I2C);
     gpio_pull_up(sda);
@@ -161,7 +157,7 @@ void lcd_init(uint8_t sda, uint8_t scl)
 void lcd_deinit(uint8_t sda, uint8_t scl)
 {
     lcd_clear();
-    i2c_deinit(I2C_PORT);
+    i2c_deinit(i2c_port);
     gpio_deinit(sda);
     gpio_deinit(scl);
 }
