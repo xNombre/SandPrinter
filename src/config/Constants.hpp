@@ -2,19 +2,11 @@
 
 #include <stdint.h>
 #include "hardware/i2c.h"
+#include "hardware/spi.h"
+
 class Constants {
 public:
     // ***************** GPIOs *********************************
-    // Display
-    static inline const uint8_t DISPLAY_SDA_GPIO = 26;
-    static inline const uint8_t DISPLAY_SCL_GPIO = 27;
-
-    // Card reader
-    static inline const uint8_t CARD_READER_CS_GPIO = 17;
-    static inline const uint8_t CARD_READER_MISO_GPIO = 16;
-    static inline const uint8_t CARD_READER_MOSI_GPIO = 19;
-    static inline const uint8_t CARD_READER_SCLK_GPIO = 18;
-
     // Buttons
     static inline const uint8_t BUTTON_UP_GPIO = 20;
     static inline const uint8_t BUTTON_OK_GPIO = 21;
@@ -34,6 +26,8 @@ public:
     // *********************************************************
 
     // ***************** DISPLAY *******************************
+    static inline const uint8_t DISPLAY_SDA_GPIO = 26;
+    static inline const uint8_t DISPLAY_SCL_GPIO = 27;
     static inline const uint8_t DISPLAY_MAX_CHAR = 16;
     static inline const uint8_t DISPLAY_MAX_LINE = 2;
     static inline const uint8_t DISPLAY_I2C_ADDRESS = 0x27;
@@ -42,5 +36,14 @@ public:
 
     // ***************** BUTTON *******************************
     static inline const uint8_t BUTTON_DEBOUNCE_MS = 50;
+    // *********************************************************
+
+
+    // ***************** Card Reader *******************************
+    static inline const uint8_t CARD_READER_CS_GPIO = 17;
+    static inline const uint8_t CARD_READER_MISO_GPIO = 16;
+    static inline const uint8_t CARD_READER_MOSI_GPIO = 19;
+    static inline const uint8_t CARD_READER_SCLK_GPIO = 18;
+    static inline spi_inst_t *const CARD_READER_SPI_PORT = spi0;
     // *********************************************************
 };

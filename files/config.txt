@@ -1,0 +1,43 @@
+# Create logfile
+DEBUG = 1
+
+# Max height and width in steps
+MAX_HEIGHT = 
+MAX_WIDTH = 
+
+#
+STEPS_PER_PIXEL =  
+
+# step / ms
+DUTY_MOVE_SPEED = 
+FREE_MOVE_SPEED = 
+
+#
+AUTOPOSITIONING = 
+POSITIONING_PRECISE_SPEED = 
+POSITIONING_ROUGH_SPEED = 
+
+# step / ms
+BRUSH_MOTOR_SPEED = 
+
+# Time in ms to wait after painting a pixel
+PAINT_DELAY = 
+
+# Choose one C,M,Y,K,R,G,B,S (grayscale)
+# Leave empty to disable brush
+BRUSH_1_COLOR = 
+BRUSH_2_COLOR = 
+BRUSH_3_COLOR = 
+BRUSH_4_COLOR = 
+
+# Scale brush motor steps with linear function
+# (COEFF)*X+(CONST) = STEPS
+# Negative numbers allowed
+BRUSH_1_COEFF = 
+BRUSH_1_CONST = 
+BRUSH_2_COEFF = 
+BRUSH_2_CONST = 
+BRUSH_3_COEFF = 
+BRUSH_3_CONST = 
+BRUSH_4_COEFF = 
+BRUSH_4_CONST = 

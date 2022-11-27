@@ -1,5 +1,5 @@
-#ifndef I2CDISPLAY_H
-#define I2CDISPLAY_H
+#pragma once
+
 // Original by raspberrypi/pico-examples/i2c/lcd_1602_i2c
 
 #include <stdio.h>
@@ -161,5 +161,3 @@ void lcd_deinit(uint8_t sda, uint8_t scl)
     gpio_deinit(sda);
     gpio_deinit(scl);
 }
-
-#endif
