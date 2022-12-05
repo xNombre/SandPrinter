@@ -33,15 +33,18 @@ std::string File::read_line(const uint32_t buffer)
     return line;
 }
 
-std::vector<char> File::read(const uint32_t size)
+std::vector<uint8_t> File::read(const uint32_t size)
 {
-    std::vector<char> arr(size);
+    std::vector<uint8_t> arr(size);
     UINT read_bytes;
 
     auto result = f_read(&file, arr.data(), size, &read_bytes);
     
-    if (result != FR_OK || read_bytes != size) {
+    if (result != FR_OK) {
         return {};
+    }
+    if (read_bytes != size) {
+        arr.resize(read_bytes);
     }
 
     return arr;
@@ -52,7 +55,7 @@ bool File::write(const std::string &msg)
     return f_printf(&file, msg.c_str()) > -1;
 }
 
-bool File::write(const std::vector<char> &data)
+bool File::write(const std::vector<uint8_t> &data)
 {
     UINT bytes_written;
     
