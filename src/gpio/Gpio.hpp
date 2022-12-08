@@ -15,6 +15,8 @@ public:
     void set_state(const bool value);
     bool get_state();
 
+    bool get_direction() const;
+
 private:
     uint8_t port;
     Direction dir;
