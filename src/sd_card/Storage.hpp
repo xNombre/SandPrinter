@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <optional>
@@ -19,6 +20,9 @@ class Storage {
 public:
     Storage();
     ~Storage();
+
+    static std::shared_ptr<Storage> get_instance();
+
     bool mount_sdcard();
     void unmount_sdcard();
     bool check_sdcard_available();
@@ -28,6 +32,8 @@ public:
     std::optional<File> open_file(const std::string &dirname, const std::string &filename, FileMode mode);
     
 private:
+    std::shared_ptr<Storage> instance;
+
     bool sdcard_mounted = false;
     sd_card_t *card;
     

@@ -2,86 +2,78 @@
 
 #include <utility>
 
+namespace Constants
+{
+    const uint8_t set_pin_delay_us = 10;
+    const uint32_t us_in_s = 1'000'000;
+    const uint8_t default_motor_speed = 1;
+}
+
 Motor::Motor(Gpio &&direction_pin, Gpio &&step_pin)
     : direction_pin(std::move(direction_pin)),
     step_pin(std::move(step_pin))
 {
     sem_init(&sem, 1, 1);
+    set_motor_speed(Constants::default_motor_speed);
 }
 
 Motor::~Motor()
 {
-    wait_for_async();
+    wait_for_async(true);
 }
 
-void Motor::set_position_blocking(uint32_t new_position)
+void Motor::set_motor_speed(uint32_t steps_per_s)
+{
+    step_wait_us = Constants::us_in_s / steps_per_s;
+}
+
+void Motor::do_steps_blocking(uint32_t steps)
 {
     sem_acquire_blocking(&sem);
 
-    uint32_t delta;
-    if (position > new_position) {
-        delta = position - new_position;
-    }
-    else {
-        delta = new_position + delta;
-    }
-
-    for (uint32_t i = 0; i < delta; i++) {
-        step_pin.set_state(true);
-        busy_wait_us(5000);
-        step_pin.set_state(false);
+    for (; steps > 0; steps--) {
+        send_pulse(step_pin);
+        busy_wait_us(step_wait_us);
     }
 
     sem_release(&sem);
 }
 
-void Motor::set_position_async(uint32_t new_position)
+void Motor::do_steps_async(uint32_t steps)
 {
     sem_acquire_blocking(&sem);
 
     timer_payload *payload = new timer_payload;
     payload->sem = &sem;
-    payload->cur_position = &position;
-    payload->new_position = new_position;
-    payload->increasing = new_position > position;
+    payload->steps_left = steps;
     payload->step_pin = &step_pin;
 
-    add_repeating_timer_us(1000000, repeating_timer_callback, payload, &timer);
+    add_repeating_timer_us(step_wait_us, repeating_timer_callback, payload, &timer);
 }
 
 bool Motor::repeating_timer_callback(repeating_timer_t *timer)
 {
     auto payload = (timer_payload *)timer->user_data;
 
-    if (payload->increasing) {
-        (*payload->cur_position)++;
-    }
-    else {
-        (*payload->cur_position)--;
-    }
+    payload->steps_left--;
+    send_pulse(*payload->step_pin);
 
-    payload->step_pin->set_state(true);
-    busy_wait_us(5000);
-    payload->step_pin->set_state(false);
-    
-    if (*payload->cur_position == payload->new_position) {
+    if (payload->steps_left == 0) {
         sem_release(payload->sem);
+        delete payload;
         return false;
     }
 
     return true;
 }
 
-void Motor::wait_for_async()
+void Motor::wait_for_async(bool use_tight_loop)
 {
     while (sem_available(&sem) != 1) {
-        busy_wait_us(1);
+        if (!use_tight_loop) {
+            busy_wait_us(1);
+        }
     }
-}
-
-uint32_t Motor::get_position() const
-{
-    return position;
 }
 
 void Motor::set_direction(Direction new_direction)
@@ -92,13 +84,9 @@ void Motor::set_direction(Direction new_direction)
 
     sem_acquire_blocking(&sem);
 
-    this->direction = direction;
+    direction = new_direction;
+    direction_pin.set_state(direction == Direction::DEC);
 
-    direction_pin.set_state(true);
-    busy_wait_us(1000000);
-    direction_pin.set_state(false);
-    busy_wait_us(500000);
-    
     sem_release(&sem);
 }
 
@@ -107,3 +95,9 @@ auto Motor::get_direction() const -> Direction
     return direction;
 }
 
+void Motor::send_pulse(Gpio &gpio)
+{
+    gpio.set_state(true);
+    busy_wait_us(Constants::set_pin_delay_us);
+    gpio.set_state(false);
+}

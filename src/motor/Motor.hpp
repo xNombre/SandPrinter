@@ -13,12 +13,13 @@ public:
     Motor(Gpio &&direction_pin, Gpio &&step_pin);
     ~Motor();
 
-    void set_motor_speed(uint32_t speed);
+    Motor(const Motor& other) = delete;
 
-    void set_position_blocking(uint32_t new_position);
-    void set_position_async(uint32_t new_position);
-    void wait_for_async();
-    uint32_t get_position() const;
+    void set_motor_speed(uint32_t steps_per_s);
+
+    void do_steps_blocking(uint32_t steps);
+    void do_steps_async(uint32_t steps);
+    void wait_for_async(bool use_tight_loop = false);
 
     void set_direction(Direction new_direction);
     Direction get_direction() const;
@@ -28,20 +29,18 @@ private:
     Gpio step_pin;
 
     Direction direction = Direction::INC;
-    uint32_t position = 0;
-    uint32_t speed;
+    uint32_t step_wait_us;
 
     semaphore_t sem;
 
     struct timer_payload {
         semaphore_t *sem;
-        uint32_t *cur_position;
-        uint32_t new_position;
-        bool increasing;
         Gpio *step_pin;
+        uint32_t steps_left;
     };
 
     repeating_timer_t timer;
 
     static bool repeating_timer_callback(repeating_timer_t *timer);
+    static void send_pulse(Gpio &gpio);
 };

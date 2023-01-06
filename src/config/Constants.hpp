@@ -15,10 +15,10 @@ public:
     // Motors
     static inline const uint8_t MOTOR_DIR_X_GPIO = 8;
     static inline const uint8_t MOTOR_STEP_X_GPIO = 9;
-    
+
     static inline const uint8_t MOTOR_DIR_Y_GPIO = 10;
     static inline const uint8_t MOTOR_STEP_Y_GPIO = 11;
-    
+
     static inline const uint8_t MOTOR_BRUSH1_GPIO = 12;
     static inline const uint8_t MOTOR_BRUSH2_GPIO = 13;
     static inline const uint8_t MOTOR_BRUSH3_GPIO = 14;
@@ -31,7 +31,7 @@ public:
     static inline const uint8_t DISPLAY_MAX_CHAR = 16;
     static inline const uint8_t DISPLAY_MAX_LINE = 2;
     static inline const uint8_t DISPLAY_I2C_ADDRESS = 0x27;
-    static inline i2c_inst_t* const DISPLAY_I2C_PORT = i2c1;
+    static inline i2c_inst_t *const DISPLAY_I2C_PORT = i2c1;
     // *********************************************************
 
     // ***************** BUTTON *******************************

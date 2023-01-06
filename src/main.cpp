@@ -13,12 +13,12 @@
 int main()
 {
     stdio_init_all();
-    Storage stor;
+    //Storage stor;
 
     Gpio mobo_led(25, Gpio::Direction::OUT);
     mobo_led.set_state(true);
 
-    Gpio yl_led(Constants::MOTOR_BRUSH4_GPIO, Gpio::Direction::OUT);
+    /*Gpio yl_led(Constants::MOTOR_BRUSH4_GPIO, Gpio::Direction::OUT);
     
     Display disp(Constants::DISPLAY_SDA_GPIO, Constants::DISPLAY_SCL_GPIO);
     disp.print_line("Hai");
@@ -31,7 +31,7 @@ int main()
             sleep_ms(500);
         }
     }
-    disp.print_scroll("SD detected");
+    disp.print_scroll("SD detected");*/
     //sleep_ms(1500);
 
     /*if (stor.file_exists("file"))
@@ -82,6 +82,9 @@ int main()
         btn.update_buttons();
     }*/
 
+    Display disp(Constants::DISPLAY_SDA_GPIO, Constants::DISPLAY_SCL_GPIO);
+    disp.print_scroll("Init");
+    
     Gpio dir(Constants::MOTOR_DIR_X_GPIO, Gpio::Direction::OUT);
     Gpio step(Constants::MOTOR_STEP_X_GPIO, Gpio::Direction::OUT);
     Motor mot(std::move(dir), std::move(step));
@@ -90,13 +93,39 @@ int main()
     Gpio step2(Constants::MOTOR_STEP_Y_GPIO, Gpio::Direction::OUT);
     Motor mot2(std::move(dir2), std::move(step2));
 
-    mot.set_direction(Motor::Direction::INC);
+    /*mot.set_direction(Motor::Direction::INC);
     mot.set_position_async(5);
     mot2.set_position_async(7);
     mot.set_direction(Motor::Direction::DEC);
     mot.set_position_async(2);
     mot.wait_for_async();
-    mot2.wait_for_async();
+    mot2.wait_for_async();*/
+
+    sleep_ms(2000);
+
+    disp.print_scroll("full rev");
+
+        mot.set_motor_speed(70);
+        mot2.set_motor_speed(70);
+        
+    while (1) {
+        mot.set_direction(Motor::Direction::INC);
+        mot2.set_direction(Motor::Direction::INC);
+
+        mot.do_steps_async(96);
+        mot2.do_steps_async(96);
+
+        mot.set_direction(Motor::Direction::DEC);
+        mot2.set_direction(Motor::Direction::DEC);
+
+        mot.do_steps_async(96);
+        mot2.do_steps_async(96);
+        mot.wait_for_async();
+        mot2.wait_for_async();
+
+        sleep_ms(100);
+    }
+
     
     while (1);
 

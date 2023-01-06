@@ -2,11 +2,14 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <string>
 
 #define SUPPORT_DISPLAY_SCROLL true
 
 class Display {
+    std::shared_ptr<Display> instance;
+
     uint8_t sda_gpio, scl_gpio;
     uint8_t pos = 0, line = 0;
 #if SUPPORT_DISPLAY_SCROLL
@@ -17,6 +20,8 @@ public:
     Display(uint8_t sda_gpio, uint8_t scl_gpio);
     ~Display();
 
+    static std::shared_ptr<Display> get_instance();
+    
     uint8_t get_cur_pos() const;
     uint8_t get_cur_line() const;
 

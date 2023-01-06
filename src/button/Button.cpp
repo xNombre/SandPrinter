@@ -39,14 +39,19 @@ void Button::remove_callback(uint8_t gpio)
     button_callbacks.erase(gpio);
 }
 
-void Button::update_buttons()
+bool Button::update_buttons()
 {
+    bool result = false;
+    
     while (!events.empty()) {
         auto handler = button_callbacks.find(events.front());
         if (handler != button_callbacks.end())
             handler->second();
         events.pop();
+        result = true;
     }
+
+    return result;
 }
 
 // When button is in singleton move to class private
@@ -78,4 +83,13 @@ int64_t Button::enable_button(alarm_id_t alarm_id, void *user_data)
     pressed_gpio = 0;
 
     return 0;
+}
+
+void Button::wait_for_button_event(bool use_tight_loop)
+{
+    while (!update_buttons()) {
+        if (!use_tight_loop) {
+            busy_wait_us(1);
+        }
+    }
 }
