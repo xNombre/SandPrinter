@@ -116,11 +116,11 @@ bool Bmp::eof() const
     return pixels == pixels_read;
 }
 
-bmp_structures::pixel Bmp::get_next_pixel()
+rgb Bmp::get_next_pixel()
 {
     if (pixels_read >= pixels) {
         // eof, return empty
-        return bmp_structures::pixel();
+        return rgb();
     }
 
     pixels_read++;
@@ -133,7 +133,7 @@ bmp_structures::pixel Bmp::get_next_pixel()
         positive_order = true;
     }
     
-    return read_in_order(positive_order);
+    return read_in_order(positive_order).get_rgb();
 }
 
 bmp_structures::pixel Bmp::read_in_order(bool positive_order)

@@ -5,6 +5,7 @@
 #include <optional>
 
 #include "../sd_card/File.hpp"
+#include "../color/ColorModels.hpp"
 
 #include "bmp_structs.hpp"
 
@@ -28,7 +29,7 @@ public:
     size_t get_height() const;
 
     bool eof() const;
-    bmp_structures::pixel get_next_pixel();
+    rgb get_next_pixel();
 
 private:
     ReadingOrder order;

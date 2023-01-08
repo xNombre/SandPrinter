@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdint.h>
+#include "../color/ColorModels.hpp"
 
-//#define __packed __attribute__((packed))
 using hword = uint8_t;
 using word = uint16_t;
 using dword = uint32_t;
@@ -30,9 +30,13 @@ public:
     } __packed;
 
     struct pixel {
-        hword blue = 0;
-        hword green = 0;
-        hword red = 0;
-    } __packed;
+        hword blue;
+        hword green;
+        hword red;
 
+        rgb get_rgb()
+        {
+            return rgb(red, green, blue);
+        }
+    } __packed;
 };
