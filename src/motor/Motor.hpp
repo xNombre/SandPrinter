@@ -11,9 +11,11 @@ public:
     };
     
     Motor(Gpio &&direction_pin, Gpio &&step_pin);
+    Motor(Gpio &&step_pin);
     ~Motor();
 
-    Motor(const Motor& other) = delete;
+    Motor(const Motor &other) = delete;
+    Motor(Motor &&other) = default;
 
     void set_motor_speed(uint32_t steps_per_s);
 

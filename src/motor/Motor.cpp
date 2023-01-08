@@ -4,9 +4,10 @@
 
 namespace Constants
 {
-    const uint8_t set_pin_delay_us = 10;
+    const uint8_t set_pin_delay_us = 5;
     const uint32_t us_in_s = 1'000'000;
     const uint8_t default_motor_speed = 1;
+    const uint32_t max_steps_per_s = us_in_s / set_pin_delay_us * 2;
 }
 
 Motor::Motor(Gpio &&direction_pin, Gpio &&step_pin)
@@ -24,11 +25,17 @@ Motor::~Motor()
 
 void Motor::set_motor_speed(uint32_t steps_per_s)
 {
+    if (steps_per_s > Constants::max_steps_per_s)
+        steps_per_s = Constants::max_steps_per_s;
+        
     step_wait_us = Constants::us_in_s / steps_per_s;
 }
 
 void Motor::do_steps_blocking(uint32_t steps)
 {
+    if (steps == 0)
+        return;
+    
     sem_acquire_blocking(&sem);
 
     for (; steps > 0; steps--) {
@@ -41,6 +48,9 @@ void Motor::do_steps_blocking(uint32_t steps)
 
 void Motor::do_steps_async(uint32_t steps)
 {
+    if (steps == 0)
+        return;
+    
     sem_acquire_blocking(&sem);
 
     timer_payload *payload = new timer_payload;
@@ -100,4 +110,5 @@ void Motor::send_pulse(Gpio &gpio)
     gpio.set_state(true);
     busy_wait_us(Constants::set_pin_delay_us);
     gpio.set_state(false);
+    busy_wait_us(Constants::set_pin_delay_us);
 }

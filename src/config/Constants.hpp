@@ -4,6 +4,8 @@
 #include "hardware/i2c.h"
 #include "hardware/spi.h"
 
+
+// Ref: https://pico.pinout.xyz/
 class Constants {
 public:
     // ***************** GPIOs *********************************
@@ -45,5 +47,10 @@ public:
     static inline const uint8_t CARD_READER_MOSI_GPIO = 19;
     static inline const uint8_t CARD_READER_SCLK_GPIO = 18;
     static inline spi_inst_t *const CARD_READER_SPI_PORT = spi0;
+    // *********************************************************
+
+    // ***************** Limit Switches ************************
+    static inline const uint8_t LIMIT_SWITCH_X_GPIO = 6;
+    static inline const uint8_t LIMIT_SWITCH_Y_GPIO = 7;
     // *********************************************************
 };
