@@ -2,11 +2,20 @@
 
 #include "hardware/gpio.h"
 
-Gpio::Gpio(uint8_t port, Direction dir)
+Gpio::Gpio(uint8_t port, Direction dir, PullResistor pull)
     : port(port), dir(dir)
 {
     gpio_init(port);
     gpio_set_dir(port, dir == Direction::IN ? false : true);
+
+    if (dir == Direction::IN) {
+        if (pull == PullResistor::UP) {
+            gpio_pull_up(port);
+        }
+        else if (pull == PullResistor::DOWN) {
+            gpio_pull_down(port);
+        }
+    }
 }
 
 Gpio::~Gpio()

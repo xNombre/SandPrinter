@@ -9,13 +9,17 @@ public:
         OUT
     };
 
-    Gpio(uint8_t port, Direction dir);
+    enum class PullResistor {
+        NONE,
+        UP,
+        DOWN
+    };
+
+    Gpio(uint8_t port, Direction dir, PullResistor pull = PullResistor::NONE);
     ~Gpio();
     
     void set_state(const bool value);
     bool get_state();
-
-    bool get_direction() const;
 
 private:
     uint8_t port;
