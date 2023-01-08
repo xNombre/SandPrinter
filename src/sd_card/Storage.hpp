@@ -18,9 +18,6 @@ enum class FileMode {
 
 class Storage {
 public:
-    Storage();
-    ~Storage();
-
     static std::shared_ptr<Storage> get_instance();
 
     bool mount_sdcard();
@@ -32,7 +29,10 @@ public:
     std::optional<File> open_file(const std::string &dirname, const std::string &filename, FileMode mode);
     
 private:
-    std::shared_ptr<Storage> instance;
+    Storage();
+    ~Storage();
+
+    static std::shared_ptr<Storage> instance;
 
     bool sdcard_mounted = false;
     sd_card_t *card;

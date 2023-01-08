@@ -8,7 +8,10 @@
 #define SUPPORT_DISPLAY_SCROLL true
 
 class Display {
-    std::shared_ptr<Display> instance;
+    Display();
+    ~Display();
+
+    static std::shared_ptr<Display> instance;
 
     uint8_t sda_gpio, scl_gpio;
     uint8_t pos = 0, line = 0;
@@ -17,9 +20,6 @@ class Display {
 #endif
 
 public:
-    Display(uint8_t sda_gpio, uint8_t scl_gpio);
-    ~Display();
-
     static std::shared_ptr<Display> get_instance();
     
     uint8_t get_cur_pos() const;

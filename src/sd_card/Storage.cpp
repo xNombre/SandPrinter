@@ -17,6 +17,17 @@ Storage::~Storage()
         unmount_sdcard();
 }
 
+std::shared_ptr<Storage> Storage::get_instance()
+{
+    class public_cstor: public Storage {};
+    
+    if (!instance) {
+        instance = std::make_shared<public_cstor>();
+    }
+
+    return instance;
+}
+
 bool Storage::mount_sdcard()
 {
     FRESULT fr = f_mount(&card->fatfs, card->pcName, 1);

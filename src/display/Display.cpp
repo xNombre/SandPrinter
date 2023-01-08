@@ -1,9 +1,12 @@
 #include "Display.hpp"
 
+#include "../config/Constants.hpp"
+
 #include "display_hw.h"
 
-Display::Display(uint8_t sda_gpio, uint8_t scl_gpio)
-    : sda_gpio(sda_gpio), scl_gpio(scl_gpio)
+Display::Display()
+    : sda_gpio(Constants::DISPLAY_SDA_GPIO),
+      scl_gpio(Constants::DISPLAY_SCL_GPIO)
 {
     lcd_init(sda_gpio, scl_gpio);
 }
@@ -12,6 +15,17 @@ Display::~Display()
 {
     lcd_clear();
     lcd_deinit(sda_gpio, scl_gpio);
+}
+
+std::shared_ptr<Display> Display::get_instance()
+{
+    class public_cstor: public Display {};
+    
+    if (!instance) {
+        instance = std::make_shared<public_cstor>();
+    }
+
+    return instance;
 }
 
 uint8_t Display::get_cur_pos() const
