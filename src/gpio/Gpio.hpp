@@ -24,4 +24,5 @@ public:
 private:
     uint8_t port;
     Direction dir;
+    bool state;
 };
