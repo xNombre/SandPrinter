@@ -61,6 +61,7 @@ target_link_libraries(
   hardware_dma
   hardware_timer
   hardware_clocks
+  pico_double
   FatFs_SPI)
 
 pico_add_extra_outputs(Plotter)

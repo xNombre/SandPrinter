@@ -1,6 +1,7 @@
 #include "ColorScaler.hpp"
 
 #include <math.h>
+#include "pico/double.h"
 
 ColorScaler::ColorScaler(Sensitivity sensitivity, double constant, double coefficient)
     : sensitivity(sensitivity), constant(constant), coefficient(coefficient)
@@ -63,5 +64,5 @@ uint8_t ColorScaler::to_grayscale(const rgb &pixel) const
 uint32_t ColorScaler::scale_color(const uint8_t color) const
 {
     auto value = double(color) * coefficient + constant;
-    return std::llround(value);
+    return double2int64_z(value);
 }
