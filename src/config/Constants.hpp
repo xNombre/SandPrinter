@@ -25,6 +25,9 @@ public:
     static inline const uint8_t MOTOR_BRUSH2_GPIO = 13;
     static inline const uint8_t MOTOR_BRUSH3_GPIO = 14;
     static inline const uint8_t MOTOR_BRUSH4_GPIO = 15;
+
+    // Leds
+    static inline const uint8_t STATUS_LED_GPIO = 25;
     // *********************************************************
 
     // ***************** DISPLAY *******************************
