@@ -1,95 +1,57 @@
 #include "Button.hpp"
 
 #include "hardware/gpio.h"
-#include "pico/time.h"
 
 #include "../config/Constants.hpp"
 
-std::queue<uint8_t> Button::events;
+std::map<uint8_t, Button *> Button::gpio_to_instance_map;
 
-Button::Button()
-{
-}
-
-Button::~Button()
-{
-    events = {};
-}
-
-void Button::register_button(uint8_t gpio)
+Button::Button(uint8_t gpio)
+    : gpio(gpio),
+    alarm_id(0)
 {
     gpio_init(gpio);
     gpio_pull_up(gpio);
     gpio_set_irq_enabled_with_callback(gpio, GPIO_IRQ_LEVEL_LOW | GPIO_IRQ_EDGE_FALL, true, handle_irq);
+
+    gpio_to_instance_map[gpio] = this;
 }
 
-void Button::unregister_button(uint8_t gpio)
+Button::~Button()
 {
-    button_callbacks.erase(gpio);
+    gpio_to_instance_map.erase(gpio);
     gpio_deinit(gpio);
 }
 
-void Button::set_callback(uint8_t gpio, callback_t callback)
+void Button::set_callback(callback_t callback)
 {
-    button_callbacks[gpio] = callback;
+    event_callback = callback;
 }
 
-void Button::remove_callback(uint8_t gpio)
+void Button::remove_callback()
 {
-    button_callbacks.erase(gpio);
+    event_callback = nullptr;
 }
-
-bool Button::update_buttons()
-{
-    bool result = false;
-    
-    while (!events.empty()) {
-        auto handler = button_callbacks.find(events.front());
-        if (handler != button_callbacks.end())
-            handler->second();
-        events.pop();
-        result = true;
-    }
-
-    return result;
-}
-
-// When button is in singleton move to class private
-static bool pressed = false;
-static uint8_t pressed_gpio = 0;
-static alarm_id_t alarm_id;
 
 void Button::handle_irq(uint gpio, uint32_t event)
 {
-    if (pressed_gpio != 0 && pressed_gpio != gpio) {
-        // Ignore two buttons pressed at the same time
-        return;
+    auto instance = gpio_to_instance_map[gpio];
+
+    if (instance->alarm_id != 0) {
+        cancel_alarm(instance->alarm_id);
     }
-    
-    if (pressed) {
-        cancel_alarm(alarm_id);
-    }
-    else {
-        pressed = true;
-        events.push(gpio);
+    else if (instance->event_callback) {
+        instance->event_callback();
     }
 
-    alarm_id = add_alarm_in_ms(Constants::BUTTON_DEBOUNCE_MS, enable_button, nullptr, false);
+    instance->alarm_id = add_alarm_in_ms(Constants::BUTTON_DEBOUNCE_MS, enable_button, instance, false);
 }
 
 int64_t Button::enable_button(alarm_id_t alarm_id, void *user_data)
 {
-    pressed = false;
-    pressed_gpio = 0;
+    auto instance = (Button *)user_data;
+
+    instance->alarm_id = 0;
 
     return 0;
-}
-
-void Button::wait_for_button_event(bool use_tight_loop)
-{
-    while (!update_buttons()) {
-        if (!use_tight_loop) {
-            busy_wait_us(1);
-        }
-    }
 }
