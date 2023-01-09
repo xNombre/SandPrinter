@@ -13,7 +13,7 @@ namespace DisplayMessages
             Y
         };
 
-        static message_list print(Option option)
+        static message_list get(Option option)
         {
             message_list messages;
 

@@ -5,7 +5,7 @@ namespace DisplayMessages
 {
     class AutoposProgress {
     public:
-        static message_list print(bool x_axis)
+        static message_list get(bool x_axis)
         {
             message_list messages;
 

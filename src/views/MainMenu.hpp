@@ -1,22 +1,28 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "MessagePrinter.hpp"
+
+#include "../printer/PrinterMenu.hpp"
 
 namespace DisplayMessages
 {
     class MainMenu {
-        static const std::vector<std::string> options;
-        
-    public:
         enum Option {
             PRINT = 0,
             MANUAL_POS,
-            AUTO_POS
+            AUTOPOS
         };
-
-        static message_list print(Option option)
+        
+        static const std::vector<std::string> options;
+        static const std::unordered_map<PrinterMenu::Option, Option> printer_menu_option_to_messages;
+        
+    public:
+        static message_list get(PrinterMenu::Option menu_option)
         {
             message_list messages;
+            auto option = printer_menu_option_to_messages.at(menu_option);
 
             //> Print
             //Manual position
@@ -34,5 +40,11 @@ namespace DisplayMessages
             "Manual position",
             "Autoposition",
             ""
+    };
+
+    const std::unordered_map<PrinterMenu::Option, MainMenu::Option> MainMenu::printer_menu_option_to_messages = {
+            {PrinterMenu::Option::PRINT, PRINT},
+            {PrinterMenu::Option::MANUAL_POS, MANUAL_POS},
+            {PrinterMenu::Option::AUTOPOS, AUTOPOS}
     };
 }

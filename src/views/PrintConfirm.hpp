@@ -6,7 +6,7 @@ namespace DisplayMessages
 {
     class PrintConfirm {
     public:
-        static message_list print(std::string file_name,
+        static message_list get(std::string file_name,
                                   uint32_t pixels)
         {
             message_list messages;

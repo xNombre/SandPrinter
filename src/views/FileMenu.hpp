@@ -7,7 +7,7 @@ namespace DisplayMessages
     class FileMenu
     {
     public:
-        static message_list print(std::string selected_file,
+        static message_list get(std::string selected_file,
                                   std::string second_file)
         {
             message_list messages;

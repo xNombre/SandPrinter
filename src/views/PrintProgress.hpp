@@ -5,7 +5,7 @@ namespace DisplayMessages
 {
     class PrintProgress {
         public:
-        static message_list print(uint32_t pixels,
+        static message_list get(uint32_t pixels,
                                   uint32_t max_pixels,
                                   uint8_t percentage)
         {

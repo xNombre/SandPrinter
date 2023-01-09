@@ -7,7 +7,7 @@ namespace DisplayMessages
     class Debug
     {
     public:
-    static message_list print(uint32_t x,
+    static message_list get(uint32_t x,
                               uint32_t y,
                               uint8_t brush_idx,
                               uint8_t brush_val,

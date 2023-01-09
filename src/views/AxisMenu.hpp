@@ -4,7 +4,7 @@
 
 namespace DisplayMessages
 {
-    class AutoposConfirm {
+    class AxisMenu {
     public:
         static message_list print()
         {

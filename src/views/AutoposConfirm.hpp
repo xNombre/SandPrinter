@@ -6,7 +6,7 @@ namespace DisplayMessages
 {
     class AutoposConfirm {
     public:
-        static message_list print()
+        static message_list get()
         {
             message_list messages;
 

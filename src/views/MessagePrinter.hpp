@@ -7,15 +7,18 @@
 
 namespace DisplayMessages
 {
-typedef std::vector<std::string> message_list;
+    typedef std::vector<std::string> message_list;
+}
 
 class MessagePrinter {
 public:
-    static void print_message(Display &disp, message_list messages)
+    static void print_message(DisplayMessages::message_list messages)
     {
+        auto display = Display::get_instance();
+        display->clear();
+        
         for (const auto &msg : messages) {
-            disp.print_line(msg);
+            display->print_line(msg);
         }
     }
 };
-}
