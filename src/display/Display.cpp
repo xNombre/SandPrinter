@@ -4,6 +4,8 @@
 
 #include "display_hw.h"
 
+DisplayInstance Display::instance;
+
 Display::Display()
     : sda_gpio(Constants::DISPLAY_SDA_GPIO),
       scl_gpio(Constants::DISPLAY_SCL_GPIO)
@@ -17,7 +19,7 @@ Display::~Display()
     lcd_deinit(sda_gpio, scl_gpio);
 }
 
-std::shared_ptr<Display> Display::get_instance()
+auto Display::get_instance() -> DisplayInstance
 {
     class public_cstor: public Display {};
     

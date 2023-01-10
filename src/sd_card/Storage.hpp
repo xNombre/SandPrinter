@@ -10,11 +10,8 @@
 
 #include "sd_card.h"
 
-enum class FileMode {
-    READ,
-    WRITE,
-    WRITE_APPEND
-};
+class Storage;
+using StorageInstance = std::shared_ptr<Storage>;
 
 class Storage {
 public:
@@ -26,7 +23,7 @@ public:
 
     bool file_exists(const std::string &file);
     std::vector<std::string> list_files_in_directory(const std::string &dirname = "");
-    std::optional<File> open_file(const std::string &dirname, const std::string &filename, FileMode mode);
+    std::optional<File> open_file(const std::string &dirname, const std::string &filename, File::Mode mode);
     
 private:
     Storage();
@@ -37,9 +34,9 @@ private:
     bool sdcard_mounted = false;
     sd_card_t *card;
     
-    const std::unordered_map<FileMode, uint8_t> file_mode_map = {
-        {FileMode::READ, FA_READ},
-        {FileMode::WRITE, FA_WRITE},
-        {FileMode::WRITE_APPEND, FA_OPEN_APPEND}
+    const std::unordered_map<File::Mode, uint8_t> file_mode_map = {
+        {File::Mode::READ, FA_READ},
+        {File::Mode::WRITE, FA_WRITE},
+        {File::Mode::WRITE_APPEND, FA_OPEN_APPEND}
     };
 };

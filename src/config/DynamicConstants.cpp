@@ -3,6 +3,8 @@
 #include "../sd_card/Storage.hpp"
 #include "../utils/string_trim.hpp"
 
+std::shared_ptr<DynamicConstants> DynamicConstants::instance;
+
 namespace Constants
 {
     const std::string config_file_name = "config.txt";
@@ -29,7 +31,7 @@ bool DynamicConstants::load_constants()
     if (!sd_card->file_exists(Constants::config_file_name))
         return false;
 
-    auto ret = sd_card->open_file("", Constants::config_file_name, FileMode::READ);
+    auto ret = sd_card->open_file("", Constants::config_file_name, File::Mode::READ);
     if (!ret)
         return false;
 

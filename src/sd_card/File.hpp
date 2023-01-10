@@ -8,6 +8,12 @@
 
 class File {
 public:
+    enum class Mode {
+        READ,
+        WRITE,
+        WRITE_APPEND
+    };
+    
     File(FIL &&file);
     ~File();
 

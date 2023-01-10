@@ -7,6 +7,9 @@
 
 #include "../sd_card/File.hpp"
 
+class DynamicConstants;
+using DynamicConstantsInstance = std::shared_ptr<DynamicConstants>;
+
 class DynamicConstants {
 public:
     enum class Option {

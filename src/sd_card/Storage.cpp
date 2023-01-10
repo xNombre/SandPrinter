@@ -5,6 +5,8 @@
 
 #include "rtc.h"
 
+StorageInstance Storage::instance;
+
 Storage::Storage()
     : card(sd_get_by_num(0))
 {
@@ -74,7 +76,7 @@ std::vector<std::string> Storage::list_files_in_directory(const std::string &dir
 
 std::optional<File> Storage::open_file(const std::string &dirname,
                                        const std::string &filename,
-                                       FileMode mode)
+                                       File::Mode mode)
 {
     FIL file;
     

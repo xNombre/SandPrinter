@@ -9,16 +9,16 @@
 
 #include "bmp_structs.hpp"
 
-enum class ReadingOrder {
-    ZIGZAG,
-    FIRST_TO_LAST,
-    LAST_TO_FIRST
-};
-
 class Bmp {
     static const size_t default_buf_size;
-    
+
 public:
+    enum class ReadingOrder {
+        ZIGZAG,
+        FIRST_TO_LAST,
+        LAST_TO_FIRST
+    };
+
     Bmp(File &&file,
         ReadingOrder order = ReadingOrder::FIRST_TO_LAST,
         size_t buffer_size = default_buf_size);
@@ -44,8 +44,8 @@ private:
 
     size_t cur_width = 0;
 
-    File&& file;
-    
+    File &&file;
+
     size_t buffer_size;
     std::vector<uint8_t> buffer;
     size_t buffer_position = 0;

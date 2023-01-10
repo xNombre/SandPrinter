@@ -7,20 +7,12 @@
 
 #define SUPPORT_DISPLAY_SCROLL true
 
+class Display;
+using DisplayInstance = std::shared_ptr<Display>;
+
 class Display {
-    Display();
-    ~Display();
-
-    static std::shared_ptr<Display> instance;
-
-    uint8_t sda_gpio, scl_gpio;
-    uint8_t pos = 0, line = 0;
-#if SUPPORT_DISPLAY_SCROLL
-    std::string last_line;
-#endif
-
 public:
-    static std::shared_ptr<Display> get_instance();
+    static DisplayInstance get_instance();
     
     uint8_t get_cur_pos() const;
     uint8_t get_cur_line() const;
@@ -35,4 +27,16 @@ public:
 #endif
     
     void clear();
+
+private:
+    Display();
+    ~Display();
+
+    static DisplayInstance instance;
+
+    uint8_t sda_gpio, scl_gpio;
+    uint8_t pos = 0, line = 0;
+#if SUPPORT_DISPLAY_SCROLL
+    std::string last_line;
+#endif
 };
