@@ -61,7 +61,9 @@ void StatusLed::set_status(LedMode new_mode)
 
 void StatusLed::blink(uint32_t timeout_ms)
 {
-    mode = LedMode::BLINK_MANUAL;
+    set_status(LedMode::BLINK_MANUAL);
+    
+    led_gpio.set_state(true);
     add_repeating_timer_ms(timeout_ms, timer_callback, this, &timer);
 }
 
