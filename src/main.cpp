@@ -9,14 +9,44 @@
 #include "motor/Motor.hpp"
 #include "sd_card/Storage.hpp"
 #include "bmp/Bmp.hpp"
+#include "leds/StatusLed.hpp"
+#include "config/DynamicConstants.hpp"
+#include "printer/PrinterMenu.hpp"
+#include "debug/ErrorHandler.hpp"
 
 int main()
 {
     stdio_init_all();
-    //Storage stor;
 
-    Gpio mobo_led(25, Gpio::Direction::OUT);
-    mobo_led.set_state(true);
+    auto led = StatusLed::get_instance();
+    led->set_status(StatusLed::LedMode::ON);
+
+    auto display = Display::get_instance();
+    display->print_line("SandPrinter");
+    display->print_line("Andrzej Perczak");
+
+    sleep_ms(1000);
+    led->set_status(StatusLed::LedMode::BLINK_FAST);
+    sleep_ms(1000);
+
+    auto storage = Storage::get_instance();
+    auto status = storage->mount_sdcard();
+    if (!status) {
+        fatal_error("No sd-card");
+    }
+
+    auto dynamic_config = DynamicConstants::get_instance();
+    status = dynamic_config->load_constants();
+    if (!status) {
+        fatal_error("config.txt error");
+    }
+
+    led->set_status(StatusLed::LedMode::OFF);
+    
+    PrinterMenu main_menu;
+    main_menu.enter_menu();
+
+    panic("");
 
     /*Gpio yl_led(Constants::MOTOR_BRUSH4_GPIO, Gpio::Direction::OUT);
     
@@ -82,16 +112,16 @@ int main()
         btn.update_buttons();
     }*/
 
-    Display disp(Constants::DISPLAY_SDA_GPIO, Constants::DISPLAY_SCL_GPIO);
-    disp.print_scroll("Init");
+    //Display disp(Constants::DISPLAY_SDA_GPIO, Constants::DISPLAY_SCL_GPIO);
+    //disp.print_scroll("Init");
     
-    Gpio dir(Constants::MOTOR_DIR_X_GPIO, Gpio::Direction::OUT);
+    /*Gpio dir(Constants::MOTOR_DIR_X_GPIO, Gpio::Direction::OUT);
     Gpio step(Constants::MOTOR_STEP_X_GPIO, Gpio::Direction::OUT);
     Motor mot(std::move(dir), std::move(step));
 
     Gpio dir2(Constants::MOTOR_DIR_Y_GPIO, Gpio::Direction::OUT);
     Gpio step2(Constants::MOTOR_STEP_Y_GPIO, Gpio::Direction::OUT);
-    Motor mot2(std::move(dir2), std::move(step2));
+    Motor mot2(std::move(dir2), std::move(step2));*/
 
     /*mot.set_direction(Motor::Direction::INC);
     mot.set_position_async(5);
@@ -101,9 +131,9 @@ int main()
     mot.wait_for_async();
     mot2.wait_for_async();*/
 
-    sleep_ms(2000);
+    //sleep_ms(2000);
 
-    disp.print_scroll("full rev");
+    /*disp.print_scroll("full rev");
 
         mot.set_motor_speed(70);
         mot2.set_motor_speed(70);
@@ -127,7 +157,7 @@ int main()
     }
 
     
-    while (1);
+    while (1);*/
 
     return 0;
 };
