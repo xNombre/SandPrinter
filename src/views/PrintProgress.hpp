@@ -6,8 +6,7 @@ namespace DisplayMessages
     class PrintProgress {
         public:
         static message_list get(uint32_t pixels,
-                                  uint32_t max_pixels,
-                                  uint8_t percentage)
+                                  uint32_t all_pixels)
         {
             message_list messages;
 
@@ -18,8 +17,8 @@ namespace DisplayMessages
 
             std::string str;
             str = std::to_string(pixels);
-            str += "/" + std::to_string(max_pixels);
-            str += " " + std::to_string(percentage) + "%";
+            str += "/" + std::to_string(all_pixels);
+            str += " " + std::to_string(pixels / all_pixels) + "%";
             messages.push_back(std::move(str));
 
             return messages;

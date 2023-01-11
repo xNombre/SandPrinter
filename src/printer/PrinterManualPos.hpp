@@ -2,13 +2,12 @@
 
 #include "../plotter/HeadController.hpp"
 
-class PrinterSettings {
+class PrinterManualPos {
 public:
-    PrinterSettings(HeadController &head_controller);
-    ~PrinterSettings() = default;
+    PrinterManualPos();
+    ~PrinterManualPos() = default;
 
     void enter_menu();
 
 private:
-    HeadController &head_controller;
 };

@@ -4,11 +4,10 @@
 
 class PrinterAutopos {
 public:
-    PrinterAutopos(HeadController& head_controller);
-    ~PrinterAutopos();
+    PrinterAutopos();
+    ~PrinterAutopos() = default;
 
     void enter_menu();
 
 private:
-    HeadController& head_controller;
 };

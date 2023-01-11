@@ -8,43 +8,35 @@
 
 namespace DisplayMessages
 {
+    namespace
+    {
     class MainMenu {
-        enum Option {
-            PRINT = 0,
-            MANUAL_POS,
-            AUTOPOS
-        };
-        
-        static const std::vector<std::string> options;
-        static const std::unordered_map<PrinterMenu::Option, Option> printer_menu_option_to_messages;
+        static const std::unordered_map<PrinterMenu::Entry, std::string> printer_menu_option_to_message;
         
     public:
-        static message_list get(PrinterMenu::Option menu_option)
+        static message_list get(PrinterMenu::Entry menu_option)
         {
             message_list messages;
-            auto option = printer_menu_option_to_messages.at(menu_option);
+            const auto& option = printer_menu_option_to_message.at(menu_option);
+            const auto &second_option = menu_option + 1 != PrinterMenu::Entry::DONOTUSE_LAST_ENTRY ?
+                printer_menu_option_to_message.at(menu_option + 1) : "";
 
             //> Print
             //Manual position
             //Autoposition
 
-            messages.push_back(">" + options[option]);
-            messages.push_back(options[option + 1]);
+            messages.push_back(">" + option);
+            messages.push_back(second_option);
 
             return messages;
         }
     };
 
-    const std::vector<std::string> MainMenu::options = {
-            "Print",
-            "Manual position",
-            "Autoposition",
-            ""
-    };
 
-    const std::unordered_map<PrinterMenu::Option, MainMenu::Option> MainMenu::printer_menu_option_to_messages = {
-            {PrinterMenu::Option::PRINT, PRINT},
-            {PrinterMenu::Option::MANUAL_POS, MANUAL_POS},
-            {PrinterMenu::Option::AUTOPOS, AUTOPOS}
-    };
+        const std::unordered_map<PrinterMenu::Entry, std::string> MainMenu::printer_menu_option_to_message = {
+                {PrinterMenu::Entry::PRINT, "Print"},
+                {PrinterMenu::Entry::MANUAL_POS, "Manual position"},
+                {PrinterMenu::Entry::AUTOPOS, "Autoposition"}
+        };
+    }
 }
