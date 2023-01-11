@@ -9,4 +9,3 @@
 #include "ManualPosMenu.hpp"
 #include "PrintConfirm.hpp"
 #include "PrintProgress.hpp"
-#include "Views.hpp"
