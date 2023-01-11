@@ -1,17 +1,19 @@
 #pragma once
 
-#include "../gpio/Gpio.hpp"
 #include "pico/sem.h"
 #include "pico/time.h"
 
+#include "../gpio/Gpio.hpp"
+#include "../gpio/FakeGpio.hpp"
+
+template <typename DirGpioType = Gpio>
 class Motor {
 public:
     enum class Direction {
         INC, DEC
     };
     
-    Motor(Gpio &&direction_pin, Gpio &&step_pin);
-    Motor(Gpio &&step_pin);
+    Motor(DirGpioType &&direction_pin, Gpio &&step_pin);
     ~Motor();
 
     Motor(const Motor &other) = delete;
@@ -27,7 +29,7 @@ public:
     Direction get_direction() const;
 
 private:
-    Gpio direction_pin;
+    DirGpioType direction_pin;
     Gpio step_pin;
 
     Direction direction = Direction::INC;
@@ -46,3 +48,6 @@ private:
     static bool repeating_timer_callback(repeating_timer_t *timer);
     static void send_pulse(Gpio &gpio);
 };
+
+template class Motor<Gpio>;
+template class Motor<FakeGpio>;

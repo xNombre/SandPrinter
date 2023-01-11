@@ -10,7 +10,8 @@ namespace Constants
     const uint32_t max_steps_per_s = us_in_s / set_pin_delay_us * 2;
 }
 
-Motor::Motor(Gpio &&direction_pin, Gpio &&step_pin)
+template <typename DirGpioType>
+Motor<DirGpioType>::Motor(DirGpioType &&direction_pin, Gpio &&step_pin)
     : direction_pin(std::move(direction_pin)),
     step_pin(std::move(step_pin))
 {
@@ -18,12 +19,14 @@ Motor::Motor(Gpio &&direction_pin, Gpio &&step_pin)
     set_motor_speed(Constants::default_motor_speed);
 }
 
-Motor::~Motor()
+template <typename DirGpioType>
+Motor<DirGpioType>::~Motor()
 {
     wait_for_async(true);
 }
 
-void Motor::set_motor_speed(uint32_t steps_per_s)
+template <typename DirGpioType>
+void Motor<DirGpioType>::set_motor_speed(uint32_t steps_per_s)
 {
     if (steps_per_s > Constants::max_steps_per_s)
         steps_per_s = Constants::max_steps_per_s;
@@ -31,7 +34,8 @@ void Motor::set_motor_speed(uint32_t steps_per_s)
     step_wait_us = Constants::us_in_s / steps_per_s;
 }
 
-void Motor::do_steps_blocking(uint32_t steps)
+template <typename DirGpioType>
+void Motor<DirGpioType>::do_steps_blocking(uint32_t steps)
 {
     if (steps == 0)
         return;
@@ -46,7 +50,8 @@ void Motor::do_steps_blocking(uint32_t steps)
     sem_release(&sem);
 }
 
-void Motor::do_steps_async(uint32_t steps)
+template <typename DirGpioType>
+void Motor<DirGpioType>::do_steps_async(uint32_t steps)
 {
     if (steps == 0)
         return;
@@ -61,7 +66,8 @@ void Motor::do_steps_async(uint32_t steps)
     add_repeating_timer_us(step_wait_us, repeating_timer_callback, payload, &timer);
 }
 
-bool Motor::repeating_timer_callback(repeating_timer_t *timer)
+template <typename DirGpioType>
+bool Motor<DirGpioType>::repeating_timer_callback(repeating_timer_t *timer)
 {
     auto payload = (timer_payload *)timer->user_data;
 
@@ -77,7 +83,8 @@ bool Motor::repeating_timer_callback(repeating_timer_t *timer)
     return true;
 }
 
-void Motor::wait_for_async(bool use_tight_loop)
+template <typename DirGpioType>
+void Motor<DirGpioType>::wait_for_async(bool use_tight_loop)
 {
     while (sem_available(&sem) != 1) {
         if (!use_tight_loop) {
@@ -86,7 +93,8 @@ void Motor::wait_for_async(bool use_tight_loop)
     }
 }
 
-void Motor::set_direction(Direction new_direction)
+template <typename DirGpioType>
+void Motor<DirGpioType>::set_direction(Direction new_direction)
 {
     if (direction == new_direction) {
         return;
@@ -100,12 +108,14 @@ void Motor::set_direction(Direction new_direction)
     sem_release(&sem);
 }
 
-auto Motor::get_direction() const -> Direction
+template <typename DirGpioType>
+auto Motor<DirGpioType>::get_direction() const -> Direction
 {
     return direction;
 }
 
-void Motor::send_pulse(Gpio &gpio)
+template <typename DirGpioType>
+void Motor<DirGpioType>::send_pulse(Gpio &gpio)
 {
     gpio.set_state(true);
     busy_wait_us(Constants::set_pin_delay_us);
