@@ -19,7 +19,7 @@ Storage::~Storage()
         unmount_sdcard();
 }
 
-std::shared_ptr<Storage> Storage::get_instance()
+StorageInstance Storage::get_instance()
 {
     class public_cstor: public Storage {};
     
@@ -64,7 +64,7 @@ std::vector<std::string> Storage::list_files_in_directory(const std::string &dir
     DIR dir;
     FILINFO info;
 
-    auto result = f_findfirst(&dir, &info, dirname.c_str(), "*\0");
+    auto result = f_findfirst(&dir, &info, dirname.c_str(), "*");
     while (result == FR_OK && *info.fname) {
         files.push_back((char *)info.fname);
         result = f_findnext(&dir, &info);
@@ -74,8 +74,7 @@ std::vector<std::string> Storage::list_files_in_directory(const std::string &dir
     return files;
 }
 
-std::optional<File> Storage::open_file(const std::string &dirname,
-                                       const std::string &filename,
+std::optional<File> Storage::open_file(const std::string &filename,
                                        File::Mode mode)
 {
     FIL file;

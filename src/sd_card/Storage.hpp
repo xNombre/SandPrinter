@@ -15,7 +15,7 @@ using StorageInstance = std::shared_ptr<Storage>;
 
 class Storage {
 public:
-    static std::shared_ptr<Storage> get_instance();
+    static StorageInstance get_instance();
 
     bool mount_sdcard();
     void unmount_sdcard();
@@ -23,13 +23,13 @@ public:
 
     bool file_exists(const std::string &file);
     std::vector<std::string> list_files_in_directory(const std::string &dirname = "");
-    std::optional<File> open_file(const std::string &dirname, const std::string &filename, File::Mode mode);
+    std::optional<File> open_file(const std::string &filename, File::Mode mode);
     
 private:
     Storage();
     ~Storage();
 
-    static std::shared_ptr<Storage> instance;
+    static StorageInstance instance;
 
     bool sdcard_mounted = false;
     sd_card_t *card;

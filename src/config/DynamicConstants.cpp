@@ -31,7 +31,7 @@ bool DynamicConstants::load_constants()
     if (!sd_card->file_exists(Constants::config_file_name))
         return false;
 
-    auto ret = sd_card->open_file("", Constants::config_file_name, File::Mode::READ);
+    auto ret = sd_card->open_file(Constants::config_file_name, File::Mode::READ);
     if (!ret)
         return false;
 
