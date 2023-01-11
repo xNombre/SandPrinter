@@ -9,13 +9,16 @@ BrushController::BrushController()
     auto dynamic_config = DynamicConstants::get_instance();
 
     paint_delay_ms = dynamic_config->get_value_int(DynamicConstants::Option::PAINT_DELAY).value();
-
-    for (const auto& brush_entry : brush_list) {
+    auto motor_speed = dynamic_config->get_value_int(DynamicConstants::Option::BRUSH_MOTOR_SPEED).value();
+    
+    for (const auto &brush_entry : brush_list) {
         if (!dynamic_config->value_is_available(brush_entry.first))
             break;
 
         Gpio step_gpio(brush_entry.second, Gpio::Direction::OUT);
-        brushes.push_back(Motor(std::move(step_gpio)));
+        Motor motor(std::move(step_gpio));
+        motor.set_motor_speed(motor_speed);
+        brushes.push_back(std::move(motor));
     }
 }
 
