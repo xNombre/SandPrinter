@@ -3,6 +3,7 @@
 #include "hardware/gpio.h"
 
 #include "../config/Constants.hpp"
+#include <hardware/irq.h>
 
 std::map<uint8_t, Button *> Button::gpio_to_instance_map;
 
@@ -25,9 +26,13 @@ Button::Button(uint8_t gpio)
 
 Button::~Button()
 {
+    irq_set_enabled(IO_IRQ_BANK0, false);
+    
     gpio_to_instance_map.erase(gpio);
     gpio_set_irq_enabled(gpio, Constant::button_irq_event_mask, false);
     gpio_deinit(gpio);
+    
+    irq_set_enabled(IO_IRQ_BANK0, true);
 }
 
 void Button::set_callback(callback_t callback)
@@ -42,7 +47,12 @@ void Button::remove_callback()
 
 void Button::handle_irq(uint gpio, uint32_t event)
 {
-    auto instance = gpio_to_instance_map[gpio];
+    // gpio can get destroyed before irq is handled
+    auto gpio_in_map = gpio_to_instance_map.find(gpio);
+    if (gpio_in_map == gpio_to_instance_map.end())
+        return;
+    
+    auto instance = gpio_in_map->second;
 
     if (instance->alarm_id != 0) {
         cancel_alarm(instance->alarm_id);
