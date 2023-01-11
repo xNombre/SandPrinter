@@ -40,7 +40,7 @@ public:
     // *********************************************************
 
     // ***************** BUTTON *******************************
-    static inline const uint8_t BUTTON_DEBOUNCE_MS = 50;
+    static inline const uint8_t BUTTON_DEBOUNCE_MS = 150;
     // *********************************************************
 
 
