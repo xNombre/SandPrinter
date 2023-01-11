@@ -5,6 +5,19 @@
 #include "../config/Constants.hpp"
 #include "Autoposition.hpp"
 
+HeadControllerInstance HeadController::instance;
+
+HeadControllerInstance HeadController::get_instance()
+{
+    class public_cstor: public HeadController {};
+
+    if (!instance) {
+        instance = std::make_shared<public_cstor>();
+    }
+
+    return instance;
+}
+
 HeadController::HeadController()
     : x_axis_motor(Gpio(Constants::MOTOR_DIR_X_GPIO, Gpio::Direction::OUT),
                          Gpio(Constants::MOTOR_STEP_X_GPIO, Gpio::Direction::OUT)),
@@ -28,7 +41,7 @@ bool HeadController::autoposition_axes()
            autoposition_axis(y_axis_motor, Constants::LIMIT_SWITCH_Y_GPIO);
 }
 
-bool HeadController::autoposition_axis(Motor &axis_motor, const uint8_t axis_switch_gpio)
+bool HeadController::autoposition_axis(Motor<> &axis_motor, const uint8_t axis_switch_gpio)
 {
     Autoposition autopos(axis_motor, axis_switch_gpio);
 
@@ -42,19 +55,19 @@ bool HeadController::goto_position(uint32_t new_x, uint32_t new_y, bool async)
     }
 
     int64_t steps = (int64_t)new_x - (int64_t)x_pos;
-    auto dir = Motor::Direction::INC;
+    auto dir = Motor<>::Direction::INC;
     if (steps < 0) {
         steps = std::abs(steps);
-        dir = Motor::Direction::DEC;
+        dir = Motor<>::Direction::DEC;
     }
     move_motor(x_axis_motor, dir, steps, async);
     x_pos = new_x;
 
     steps = (int64_t)new_y - (int64_t)y_pos;
-    dir = Motor::Direction::INC;
+    dir = Motor<>::Direction::INC;
     if (steps < 0) {
         steps = std::abs(steps);
-        dir = Motor::Direction::DEC;
+        dir = Motor<>::Direction::DEC;
     }
     move_motor(y_axis_motor, dir, steps, async);
     y_pos = new_y;
@@ -62,13 +75,13 @@ bool HeadController::goto_position(uint32_t new_x, uint32_t new_y, bool async)
     return true;
 }
 
-void HeadController::move_motor_raw(Axis axis, Motor::Direction dir, uint32_t steps, bool async)
+void HeadController::move_motor_raw(Axis axis, Motor<>::Direction dir, uint32_t steps, bool async)
 {
     auto &motor = axis == Axis::X ? x_axis_motor : y_axis_motor;
     move_motor(motor, dir, steps, async);
 }
 
-void HeadController::move_motor(Motor &motor, Motor::Direction dir, uint32_t steps, bool async)
+void HeadController::move_motor(Motor<> &motor, Motor<>::Direction dir, uint32_t steps, bool async)
 {
     if (steps == 0) {
         return;

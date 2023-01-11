@@ -16,7 +16,8 @@ BrushController::BrushController()
             break;
 
         Gpio step_gpio(brush_entry.second, Gpio::Direction::OUT);
-        Motor motor(std::move(step_gpio));
+        FakeGpio fake_dir_gpio;
+        Motor motor(std::move(fake_dir_gpio), std::move(step_gpio));
         motor.set_motor_speed(motor_speed);
         brushes.push_back(std::move(motor));
     }

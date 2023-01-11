@@ -5,6 +5,7 @@
 #include "../motor/Motor.hpp"
 #include "../config/DynamicConstants.hpp"
 #include "../config/Constants.hpp"
+#include "../gpio/FakeGpio.hpp"
 
 class BrushController {
 public:
@@ -16,7 +17,7 @@ public:
     void wait_for_motors(bool do_paint_delay = true);
 
 private:
-    std::vector<Motor> brushes;
+    std::vector<Motor<FakeGpio>> brushes;
 
     uint32_t paint_delay_ms;
 
