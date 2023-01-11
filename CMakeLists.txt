@@ -42,6 +42,8 @@ pico_set_program_version(Plotter "0.1")
 pico_enable_stdio_uart(Plotter 1)
 pico_enable_stdio_usb(Plotter 0)
 
+target_compile_options(Plotter PRIVATE -Wno-psabi)
+
 # Add the standard library to the build
 target_link_libraries(Plotter pico_stdlib)
 
