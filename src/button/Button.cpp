@@ -26,6 +26,7 @@ Button::Button(uint8_t gpio)
 Button::~Button()
 {
     gpio_to_instance_map.erase(gpio);
+    gpio_set_irq_enabled(gpio, Constant::button_irq_event_mask, false);
     gpio_deinit(gpio);
 }
 
