@@ -9,7 +9,11 @@ public:
         DUTY,
         FREE
     };
-    
+    enum class Axis {
+        X,
+        Y
+    };
+
     HeadController();
     ~HeadController() = default;
 
@@ -19,6 +23,11 @@ public:
     void wait_for_motors();
     void set_mode(MotorMode mode);
 
+    // !!CAREFULL!!
+    // Moves motor without any bound checks
+    // Used for manual positioning
+    void move_motor_raw(Axis axis, Motor::Direction dir, uint32_t steps, bool async = false);
+    
     void reset_axes_position();
     
     uint32_t get_x() const;
@@ -38,5 +47,5 @@ private:
     uint32_t free_speed;
 
     bool autoposition_axis(Motor &axis_motor, const uint8_t axis_switch_gpio);
-    void move_motor(Motor &motor, uint32_t new_pos, uint32_t old_pos, bool async);
+    void move_motor(Motor &motor, Motor::Direction dir, uint32_t steps, bool async);
 };

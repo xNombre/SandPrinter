@@ -41,29 +41,40 @@ bool HeadController::goto_position(uint32_t new_x, uint32_t new_y, bool async)
         return false;
     }
 
-    move_motor(x_axis_motor, new_x, x_pos, async);
+    int64_t steps = (int64_t)new_x - (int64_t)x_pos;
+    auto dir = Motor::Direction::INC;
+    if (steps < 0) {
+        steps = std::abs(steps);
+        dir = Motor::Direction::DEC;
+    }
+    move_motor(x_axis_motor, dir, steps, async);
     x_pos = new_x;
-    
-    move_motor(y_axis_motor, new_y, y_pos, async);
+
+    steps = (int64_t)new_y - (int64_t)y_pos;
+    dir = Motor::Direction::INC;
+    if (steps < 0) {
+        steps = std::abs(steps);
+        dir = Motor::Direction::DEC;
+    }
+    move_motor(y_axis_motor, dir, steps, async);
     y_pos = new_y;
 
     return true;
 }
 
-void HeadController::move_motor(Motor &motor, uint32_t new_pos, uint32_t old_pos, bool async)
+void HeadController::move_motor_raw(Axis axis, Motor::Direction dir, uint32_t steps, bool async)
 {
-    uint32_t steps = new_pos - old_pos;
+    auto &motor = axis == Axis::X ? x_axis_motor : y_axis_motor;
+    move_motor(motor, dir, steps, async);
+}
+
+void HeadController::move_motor(Motor &motor, Motor::Direction dir, uint32_t steps, bool async)
+{
     if (steps == 0) {
         return;
     }
-    
-    if (new_pos < old_pos) {
-        steps += UINT32_MAX;
-        motor.set_direction(Motor::Direction::DEC);
-    }
-    else {
-        motor.set_direction(Motor::Direction::INC);
-    }
+
+    motor.set_direction(dir);
 
     if (async)
         motor.do_steps_async(steps);
