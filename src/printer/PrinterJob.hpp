@@ -5,6 +5,8 @@
 #include "../plotter/HeadController.hpp"
 #include "../bmp/Bmp.hpp"
 #include "../display/Display.hpp"
+#include "../color/ColorScaler.hpp"
+#include "PixelProcessor.hpp"
 
 class PrinterJob {
 public:
@@ -17,5 +19,9 @@ public:
 private:
     BrushController brush_controller;
     HeadControllerInstance head_controller;
+    PixelProcessor pixel_processor;
     std::unique_ptr<Bmp> image;
+    uint32_t pixel_size;
+    uint32_t max_height_px;
+    uint32_t max_width_px;
 };
