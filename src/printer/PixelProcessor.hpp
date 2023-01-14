@@ -53,7 +53,7 @@ private:
         {"G", ColorScaler::Sensitivity::G},
         {"B", ColorScaler::Sensitivity::B},
         {"C", ColorScaler::Sensitivity::C},
-        {"C", ColorScaler::Sensitivity::C},
+        {"M", ColorScaler::Sensitivity::M},
         {"Y", ColorScaler::Sensitivity::Y},
         {"K", ColorScaler::Sensitivity::K},
         {"S", ColorScaler::Sensitivity::GRAYSCALE}
