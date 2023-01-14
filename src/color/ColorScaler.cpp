@@ -2,9 +2,10 @@
 
 #include <math.h>
 #include "pico/double.h"
+#include <stdio.h>
 
-ColorScaler::ColorScaler(Sensitivity sensitivity, double constant, double coefficient)
-    : sensitivity(sensitivity), constant(constant), coefficient(coefficient)
+ColorScaler::ColorScaler(Sensitivity sensitivity, double coefficient, double constant)
+    : sensitivity(sensitivity), coefficient(coefficient), constant(constant)
 {
 }
 

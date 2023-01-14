@@ -15,7 +15,7 @@ public:
         GRAYSCALE
     };
     
-    ColorScaler(Sensitivity sensitivity, double constant, double coefficient);
+    ColorScaler(Sensitivity sensitivity, double coefficient, double constant);
     ~ColorScaler() = default;
 
     uint32_t process_color(const rgb &pixel) const;
