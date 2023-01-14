@@ -45,6 +45,7 @@ public:
     bool value_is_available(Option param);
     std::optional<int64_t> get_value_int(Option param);
     bool get_value_bool(Option param);
+    std::optional<double> get_value_double(Option param);
 
 private:
     DynamicConstants() = default;

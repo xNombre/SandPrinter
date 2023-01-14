@@ -103,3 +103,11 @@ bool DynamicConstants::get_value_bool(Option param)
 
     return false;
 }
+
+std::optional<double> DynamicConstants::get_value_double(Option param)
+{
+    if (!value_is_available(param))
+        return std::nullopt;
+
+    return std::stod(param_values[param]);
+}
