@@ -18,7 +18,7 @@ namespace DisplayMessages
             std::string str;
             str = std::to_string(pixels);
             str += "/" + std::to_string(all_pixels);
-            str += " " + std::to_string(pixels / all_pixels) + "%";
+            str += " " + std::to_string(int(((double)pixels / (double)all_pixels) * 100)) + "%";
             messages.push_back(std::move(str));
 
             return messages;
