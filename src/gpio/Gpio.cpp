@@ -20,7 +20,8 @@ Gpio::Gpio(uint8_t port, Direction dir, PullResistor pull)
 
 Gpio::~Gpio()
 {
-    gpio_deinit(port);
+    if(!gpio_moved)
+        gpio_deinit(port);
 }
 
 void Gpio::set_state(const bool value)
@@ -38,4 +39,12 @@ bool Gpio::get_state()
         return state;
     
     return gpio_get(port);
+}
+
+Gpio::Gpio(Gpio &&other)
+{
+    other.gpio_moved = true;
+    port = other.port;
+    dir = other.dir;
+    state = other.state;
 }
