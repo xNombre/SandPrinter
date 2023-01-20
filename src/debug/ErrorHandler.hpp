@@ -23,7 +23,7 @@ static void fatal_error(const std::string &msg)
     display_instance->print_line("System panic!");
     display_instance->print_line(msg);
 
-    gpio_clr_mask(0x00);
+    gpio_put_masked(0x1C, 0);
 
     panic("");
 }
