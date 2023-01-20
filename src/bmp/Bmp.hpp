@@ -18,6 +18,9 @@ public:
         FIRST_TO_LAST,
         LAST_TO_FIRST
     };
+    struct pixel_position {
+        uint32_t x, y;
+    };
 
     Bmp(File &&file,
         ReadingOrder order = ReadingOrder::FIRST_TO_LAST,
@@ -30,6 +33,7 @@ public:
 
     bool eof() const;
     rgb get_next_pixel();
+    pixel_position get_current_pixel_position() const;
 
 private:
     ReadingOrder order;

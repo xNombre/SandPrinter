@@ -7,6 +7,7 @@
 #include "../button/Button.hpp"
 #include "../config/Constants.hpp"
 #include "../debug/ErrorHandler.hpp"
+#include "../leds/StatusLed.hpp"
 
 namespace Constant
 {
@@ -55,43 +56,30 @@ bool PrinterJob::prepare_job(const std::string &filename)
 
 bool PrinterJob::start_job()
 {
+    DisplayMessages::message_list status_message, debug_message;
     Button detailed_info_button(Constants::BUTTON_DOWN_GPIO);
     uint32_t finished_pixels = 0, all_pixels;
-    uint32_t pixels_in_row = image->get_width() * pixel_size;
-    bool zigzag_bit = true;
     bool debug_view = false;
 
     all_pixels = image->get_height() * image->get_width();
     head_controller->set_mode(HeadController::MotorMode::DUTY);
-    detailed_info_button.set_callback([&] { debug_view = !debug_view; });
+    detailed_info_button.set_callback([&] {
+        debug_view = !debug_view;
+    });
 
     while (!image->eof()) {
-        auto x = head_controller->get_x();
-        auto y = head_controller->get_y();
+        const auto &pixel = image->get_next_pixel();
+        const auto &new_pos = image->get_current_pixel_position();
 
-        if (x == 0 || x == pixels_in_row) {
-            zigzag_bit = !zigzag_bit;
-            y += 1;
-        }
-        else {
-            x = zigzag_bit ? x + pixel_size : x - pixel_size;
-        }
-        auto position_status = head_controller->goto_position(x, y);
+        debug_message = DisplayMessages::Debug::get(new_pos.x, new_pos.y, 0, 0, pixel.r, pixel.g, pixel.b);
+        status_message = DisplayMessages::PrintProgress::get(finished_pixels, all_pixels);
+        MessagePrinter::print_message(debug_view ? debug_message : status_message);
+        
+        pixel_processor.paint_pixel(pixel);
+
+        auto position_status = head_controller->goto_position(new_pos.x * pixel_size, new_pos.y * pixel_size);
         if (!position_status)
             fatal_error("goto_position failed");
-
-        const auto &pixel = image->get_next_pixel();
-
-        DisplayMessages::message_list message;
-        if (debug_view) {
-            message = DisplayMessages::Debug::get(x, y, 0, 0, pixel.r, pixel.g, pixel.b);
-        }
-        else {
-            message = DisplayMessages::PrintProgress::get(finished_pixels, all_pixels);
-        }
-        MessagePrinter::print_message(message);
-
-        pixel_processor.paint_pixel(pixel);
 
         finished_pixels++;
     }

@@ -1,6 +1,7 @@
 #include "Bmp.hpp"
 
 #include <string.h>
+#include "../debug/ErrorHandler.hpp"
 
 namespace Constant
 {
@@ -144,13 +145,13 @@ bmp_structures::pixel Bmp::read_in_order(bool positive_order)
         refill_buffer();
     }
 
-    auto pixels_index = buffer_position;
+    auto pixel_index = buffer_position;
     if (!positive_order) {
-        pixels_index += bytes_per_width - padding_bytes -
+        pixel_index += bytes_per_width - padding_bytes -
             sizeof(bmp_structures::pixel) - 2 * (buffer_position % bytes_per_width);
     }
 
-    memcpy(&pixel, &buffer[pixels_index], sizeof(bmp_structures::pixel));
+    memcpy(&pixel, &buffer[pixel_index], sizeof(bmp_structures::pixel));
 
     buffer_position += sizeof(bmp_structures::pixel);
     cur_width++;
@@ -169,10 +170,22 @@ bool Bmp::refill_buffer()
     auto data = file.read(buffer_size);
 
     if (data.empty())
-        return false; // panic? this is fatal
+        fatal_error("refill buf fail!");
 
     buffer_position = 0;
     buffer = std::move(data);
 
     return true;
+}
+
+auto Bmp::get_current_pixel_position() const -> pixel_position
+{
+    pixel_position pos;
+    auto y_pos = (pixels_read - 1) / width;
+    auto cur_width = (pixels_read - 1) % width;
+    
+    pos.x = y_pos % 2 == 0 ? cur_width : width - 1 - cur_width;
+    pos.y = y_pos;
+
+    return pos;
 }
