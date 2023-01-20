@@ -27,7 +27,11 @@ Button::Button(uint8_t gpio)
 Button::~Button()
 {
     irq_set_enabled(IO_IRQ_BANK0, false);
-    
+
+    while (alarm_id != 0) {
+        busy_wait_ms(1);
+    }
+
     gpio_to_instance_map.erase(gpio);
     gpio_set_irq_enabled(gpio, Constant::button_irq_event_mask, false);
     gpio_deinit(gpio);
