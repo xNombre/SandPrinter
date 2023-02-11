@@ -2,6 +2,7 @@
 
 #include "../sd_card/Storage.hpp"
 #include "../utils/string_trim.hpp"
+#include "../debug/DebugMessage.hpp"
 
 std::shared_ptr<DynamicConstants> DynamicConstants::instance;
 
@@ -41,6 +42,8 @@ bool DynamicConstants::load_constants()
 
 bool DynamicConstants::read_config_file(File &file)
 {
+    print(MessageType::INFO, "Reading configuration file...");
+    
     while (!file.eof()) {
         auto line = file.read_line();
 
@@ -63,12 +66,16 @@ bool DynamicConstants::read_config_file(File &file)
         remove_spaces(option_value);
 
         if (option_value.empty()) {
-            if (option.second == true)
+            if (option.second == true) {
+                print(MessageType::WARN, "Required option value is empty! -> " + option_string);
                 return false;
+            }
+            
             continue;
         }
 
         param_values[option.first] = option_value;
+        print(MessageType::LOG, "Value: " + option_string + " -> " + option_value);
     }
 
     return true;

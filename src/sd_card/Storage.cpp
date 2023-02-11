@@ -1,6 +1,7 @@
 #include "Storage.hpp"
 
 #include "../config/Constants.hpp"
+#include "../debug/DebugMessage.hpp"
 #include "storage_hw.h"
 
 #include "rtc.h"
@@ -34,6 +35,7 @@ bool Storage::mount_sdcard()
 {
     FRESULT fr = f_mount(&card->fatfs, card->pcName, 1);
 
+    print(MessageType::INFO, "Mount sdcard, result: " + std::to_string(int(fr)));
     sdcard_mounted = FR_OK == fr;
 
     return sdcard_mounted;
@@ -54,7 +56,8 @@ bool Storage::check_sdcard_available()
 bool Storage::file_exists(const std::string &file)
 {
     auto result = f_stat(file.c_str(), nullptr);
-    
+    print(MessageType::LOG, "File exists: " + file + ", result: " + std::to_string(int(result)));
+
     return result == FR_OK;
 }
 
@@ -80,6 +83,7 @@ std::optional<File> Storage::open_file(const std::string &filename,
     FIL file;
     
     auto result = f_open(&file, filename.c_str(), file_mode_map.at(mode));
+    print(MessageType::LOG, "File open: " + filename + ", result: " + std::to_string(int(result)));
     if (result != FR_OK)
         return std::nullopt;
 

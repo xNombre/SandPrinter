@@ -2,7 +2,7 @@
 
 #include <string.h>
 #include "../debug/ErrorHandler.hpp"
-
+#include "../debug/DebugMessage.hpp"
 namespace Constant
 {
     const dword bmp_signature = 0x4D42;
@@ -50,22 +50,18 @@ bool Bmp::load_file()
     bmp_structures::bitmap_info info;
 
     auto data = file.read(sizeof(header));
-
     if (data.empty())
         return false;
     
     memcpy(&header, data.data(), sizeof(header));
-
     if (!check_bmp_header(header))
         return false;
 
     data = file.read(sizeof(info));
-
     if (data.empty())
         return false;
 
     memcpy(&info, data.data(), sizeof(info));
-
     if (!check_bmp_info(info))
         return false;
 
@@ -75,9 +71,9 @@ bool Bmp::load_file()
 
     bytes_per_width = width * sizeof(bmp_structures::pixel);
     
-    // Last two bits are 4 byte alignment remainder
-    // Negate them to get needed padding bytes
-    //padding_bytes = (0b100 - (bytes_per_width & 0b11)) & 0b11;
+    // BMP is padded to 4 bytes, extract required padding
+    // Substract 4 bytes from actual size to get remainder
+    // Select last two bits via AND
     padding_bytes = (0b100 - bytes_per_width) & 0b11;
     bytes_per_width += padding_bytes;
 
@@ -88,6 +84,7 @@ bool Bmp::load_file()
     }
     
     if (buffer_size > Constant::max_buffer_size) {
+        print(MessageType::WARN, "Image width too large! " + std::to_string(buffer_size));
         return false;
     }
 

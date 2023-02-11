@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
-
+#include "debug/DebugMessage.hpp"
 #include "config/Constants.hpp"
 #include "display/Display.hpp"
 #include "button/Button.hpp"
@@ -18,6 +18,8 @@ int main()
 {
     stdio_init_all();
 
+    print(MessageType::INFO, "SandPrinter Entry");
+    
     auto led = StatusLed::get_instance();
     led->set_status(StatusLed::LedMode::ON);
 
@@ -32,7 +34,7 @@ int main()
     auto storage = Storage::get_instance();
     auto status = storage->mount_sdcard();
     if (!status) {
-        fatal_error("No sd-card");
+        fatal_error(ErrorMessage::NO_SDCARD);
     }
 
     auto dynamic_config = DynamicConstants::get_instance();
