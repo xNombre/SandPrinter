@@ -1,14 +1,14 @@
 #include "PrinterMenu.hpp"
 
+#include <views/Views.hpp>
+#include <button/Button.hpp>
+#include <leds/StatusLed.hpp>
+#include <debug/ErrorHandler.hpp>
+
 #include "PrinterJob.hpp"
 #include "PrinterAutopos.hpp"
 #include "PrinterManualPos.hpp"
 #include "FileSelector.hpp"
-
-#include "../views/Views.hpp"
-#include "../button/Button.hpp"
-#include "../leds/StatusLed.hpp"
-#include "../debug/ErrorHandler.hpp"
 
 namespace Constant
 {

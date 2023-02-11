@@ -1,8 +1,8 @@
 #include "BrushController.hpp"
 
-#include "pico/time.h"
+#include <pico/time.h>
 
-#include "../gpio/Gpio.hpp"
+#include <gpio/Gpio.hpp>
 
 BrushController::BrushController()
 {

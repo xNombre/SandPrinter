@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MessagePrinter.hpp"
+
 namespace DisplayMessages
 {
     class AutoposProgress {

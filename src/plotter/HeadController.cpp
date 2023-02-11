@@ -2,7 +2,8 @@
 
 #include <utility>
 
-#include "../config/Constants.hpp"
+#include <config/Constants.hpp>
+
 #include "Autoposition.hpp"
 
 HeadControllerInstance HeadController::instance;

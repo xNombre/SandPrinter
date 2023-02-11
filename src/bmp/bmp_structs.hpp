@@ -1,7 +1,8 @@
 #pragma once
 
 #include <stdint.h>
-#include "../color/ColorModels.hpp"
+
+#include <color/ColorModels.hpp>
 
 using hword = uint8_t;
 using word = uint16_t;

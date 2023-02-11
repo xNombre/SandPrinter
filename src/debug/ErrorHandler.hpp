@@ -2,10 +2,10 @@
 
 #include <string>
 
-#include "pico/stdlib.h"
+#include <pico/stdlib.h>
 
-#include "../display/Display.hpp"
-#include "../config/Constants.hpp"
+#include <display/Display.hpp>
+#include <config/Constants.hpp>
 
 #include "ErrorMessages.hpp"
 #include "DebugMessage.hpp"

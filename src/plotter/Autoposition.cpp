@@ -1,7 +1,8 @@
 #include "Autoposition.hpp"
 
-#include "time.h"
-#include "../config/DynamicConstants.hpp"
+#include <time.h>
+
+#include <config/DynamicConstants.hpp>
 
 namespace Constants
 {

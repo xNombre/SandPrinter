@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../color/ColorModels.hpp"
+#include <color/ColorModels.hpp>
 
 struct Pixel {
     rgb color;

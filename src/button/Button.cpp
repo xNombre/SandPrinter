@@ -1,9 +1,9 @@
 #include "Button.hpp"
 
-#include "hardware/gpio.h"
-
-#include "../config/Constants.hpp"
+#include <hardware/gpio.h>
 #include <hardware/irq.h>
+
+#include <config/Constants.hpp>
 
 std::map<uint8_t, Button *> Button::gpio_to_instance_map;
 

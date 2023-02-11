@@ -1,10 +1,11 @@
 #include "Storage.hpp"
 
-#include "../config/Constants.hpp"
-#include "../debug/DebugMessage.hpp"
-#include "storage_hw.h"
+#include <rtc.h>
 
-#include "rtc.h"
+#include <config/Constants.hpp>
+#include <debug/DebugMessage.hpp>
+
+#include "storage_hw.h"
 
 StorageInstance Storage::instance;
 

@@ -4,8 +4,8 @@
 #include <memory>
 #include <optional>
 
-#include "../sd_card/File.hpp"
-#include "../color/ColorModels.hpp"
+#include <sd_card/File.hpp>
+#include <color/ColorModels.hpp>
 
 #include "bmp_structs.hpp"
 #include "Pixel.hpp"

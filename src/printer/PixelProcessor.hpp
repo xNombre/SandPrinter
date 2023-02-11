@@ -3,11 +3,11 @@
 #include <vector>
 #include <unordered_map>
 
-#include "../config/DynamicConstants.hpp"
-#include "../config/Constants.hpp"
-#include "../plotter/BrushController.hpp"
-#include "../color/ColorModels.hpp"
-#include "../color/ColorScaler.hpp"
+#include <config/DynamicConstants.hpp>
+#include <config/Constants.hpp>
+#include <plotter/BrushController.hpp>
+#include <color/ColorModels.hpp>
+#include <color/ColorScaler.hpp>
 
 class PixelProcessor {
 public:

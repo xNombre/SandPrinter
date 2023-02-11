@@ -1,6 +1,6 @@
 #include "Gpio.hpp"
 
-#include "hardware/gpio.h"
+#include <hardware/gpio.h>
 
 Gpio::Gpio(uint8_t port, Direction dir, PullResistor pull)
     : port(port), dir(dir), state(false)

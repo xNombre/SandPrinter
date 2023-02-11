@@ -4,7 +4,7 @@
 
 #include <pico/time.h>
 
-#include "../gpio/Gpio.hpp"
+#include <gpio/Gpio.hpp>
 
 class StatusLed;
 using StatusLedInstance = std::shared_ptr<StatusLed>;

@@ -58,6 +58,8 @@ target_include_directories(
                                        # standard includes, if required
 )
 
+target_include_directories(Plotter PRIVATE "src/")
+
 # Add any user requested libraries
 target_link_libraries(
   Plotter

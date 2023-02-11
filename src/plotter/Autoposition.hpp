@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../gpio/Gpio.hpp"
-#include "../motor/Motor.hpp"
+#include <gpio/Gpio.hpp>
+#include <motor/Motor.hpp>
 
 class Autoposition {
 public:

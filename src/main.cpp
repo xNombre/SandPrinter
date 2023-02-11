@@ -1,18 +1,12 @@
 #include <stdio.h>
-#include "pico/stdlib.h"
-#include "debug/DebugMessage.hpp"
-#include "config/Constants.hpp"
-#include "display/Display.hpp"
-#include "button/Button.hpp"
-#include "gpio/Gpio.hpp"
-#include "pico/time.h"
-#include "motor/Motor.hpp"
-#include "sd_card/Storage.hpp"
-#include "bmp/Bmp.hpp"
-#include "leds/StatusLed.hpp"
-#include "config/DynamicConstants.hpp"
-#include "printer/PrinterMenu.hpp"
-#include "debug/ErrorHandler.hpp"
+
+#include <debug/DebugMessage.hpp>
+#include <display/Display.hpp>
+#include <sd_card/Storage.hpp>
+#include <leds/StatusLed.hpp>
+#include <config/DynamicConstants.hpp>
+#include <printer/PrinterMenu.hpp>
+#include <debug/ErrorHandler.hpp>
 
 int main()
 {
@@ -40,7 +34,7 @@ int main()
     auto dynamic_config = DynamicConstants::get_instance();
     status = dynamic_config->load_constants();
     if (!status) {
-        fatal_error("config.txt error");
+        fatal_error(ErrorMessage::CORRUPTED_CONFIG);
     }
 
     led->set_status(StatusLed::LedMode::OFF);

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../plotter/HeadController.hpp"
+#include <plotter/HeadController.hpp>
 
 class PrinterManualPos {
 public:

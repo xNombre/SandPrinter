@@ -1,10 +1,10 @@
 #pragma once
 
-#include "pico/sem.h"
-#include "pico/time.h"
+#include <pico/sem.h>
+#include <pico/time.h>
 
-#include "../gpio/Gpio.hpp"
-#include "../gpio/FakeGpio.hpp"
+#include <gpio/Gpio.hpp>
+#include <gpio/FakeGpio.hpp>
 
 template <typename DirGpioType = Gpio>
 class Motor {

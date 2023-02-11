@@ -4,7 +4,7 @@
 
 #include "MessagePrinter.hpp"
 
-#include "../printer/PrinterMenu.hpp"
+#include <printer/PrinterMenu.hpp>
 
 namespace DisplayMessages
 {

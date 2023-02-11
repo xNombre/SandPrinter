@@ -1,6 +1,6 @@
 #include "Display.hpp"
 
-#include "../config/Constants.hpp"
+#include <config/Constants.hpp>
 
 #include "display_hw.h"
 

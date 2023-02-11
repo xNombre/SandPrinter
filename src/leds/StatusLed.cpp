@@ -1,6 +1,6 @@
 #include "StatusLed.hpp"
 
-#include "../config/Constants.hpp"
+#include <config/Constants.hpp>
 
 StatusLedInstance StatusLed::instance;
 

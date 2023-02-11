@@ -2,7 +2,7 @@
 
 #include "MessagePrinter.hpp"
 
-#include "../printer/FileSelector.hpp"
+#include <printer/FileSelector.hpp>
 
 namespace DisplayMessages
 {

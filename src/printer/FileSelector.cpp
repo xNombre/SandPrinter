@@ -1,12 +1,12 @@
 #include "FileSelector.hpp"
 
-#include "../display/Display.hpp"
-#include "../sd_card/File.hpp"
-#include "../sd_card/Storage.hpp"
-#include "../button/Button.hpp"
-#include "../config/Constants.hpp"
-#include "../views/Views.hpp"
-#include "../leds/StatusLed.hpp"
+#include <display/Display.hpp>
+#include <sd_card/File.hpp>
+#include <sd_card/Storage.hpp>
+#include <button/Button.hpp>
+#include <config/Constants.hpp>
+#include <views/Views.hpp>
+#include <leds/StatusLed.hpp>
 
 FileSelector::FileSelector(const std::string &directory, const std::string &extension)
     : directory(directory)

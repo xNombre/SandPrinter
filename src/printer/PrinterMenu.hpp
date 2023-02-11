@@ -2,7 +2,7 @@
 
 #include <list>
 
-#include "../plotter/HeadController.hpp"
+#include <plotter/HeadController.hpp>
 
 class PrinterMenu {
 public:

@@ -1,6 +1,6 @@
 #include "File.hpp"
 
-#include "../debug/DebugMessage.hpp"
+#include <debug/DebugMessage.hpp>
 
 File::File(FIL &&file)
     : file(std::move(file))

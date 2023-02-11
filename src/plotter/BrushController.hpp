@@ -2,10 +2,10 @@
 
 #include <vector>
 
-#include "../motor/Motor.hpp"
-#include "../config/DynamicConstants.hpp"
-#include "../config/Constants.hpp"
-#include "../gpio/FakeGpio.hpp"
+#include <motor/Motor.hpp>
+#include <config/DynamicConstants.hpp>
+#include <config/Constants.hpp>
+#include <gpio/FakeGpio.hpp>
 
 class BrushController {
 public:

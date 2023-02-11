@@ -1,14 +1,14 @@
 #include "PrinterJob.hpp"
 
-#include "../sd_card/File.hpp"
-#include "../sd_card/Storage.hpp"
-#include "../config/DynamicConstants.hpp"
-#include "../views/Views.hpp"
-#include "../button/Button.hpp"
-#include "../config/Constants.hpp"
-#include "../debug/ErrorHandler.hpp"
-#include "../leds/StatusLed.hpp"
-#include "../debug/DebugMessage.hpp"
+#include <sd_card/File.hpp>
+#include <sd_card/Storage.hpp>
+#include <config/DynamicConstants.hpp>
+#include <views/Views.hpp>
+#include <button/Button.hpp>
+#include <config/Constants.hpp>
+#include <debug/ErrorHandler.hpp>
+#include <leds/StatusLed.hpp>
+#include <debug/DebugMessage.hpp>
 
 namespace Constant
 {

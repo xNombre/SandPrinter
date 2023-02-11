@@ -3,11 +3,12 @@
 // Original by raspberrypi/pico-examples/i2c/lcd_1602_i2c
 
 #include <stdio.h>
-#include "pico/stdlib.h"
-#include "hardware/i2c.h"
-#include "pico/binary_info.h"
 
-#include "../config/Constants.hpp"
+#include <pico/stdlib.h>
+#include <hardware/i2c.h>
+#include <pico/binary_info.h>
+
+#include <config/Constants.hpp>
 
 //
 // Variables

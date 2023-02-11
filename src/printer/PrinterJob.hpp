@@ -1,11 +1,13 @@
 #pragma once
 
 #include <string>
-#include "../plotter/BrushController.hpp"
-#include "../plotter/HeadController.hpp"
-#include "../bmp/Bmp.hpp"
-#include "../display/Display.hpp"
-#include "../color/ColorScaler.hpp"
+
+#include <plotter/BrushController.hpp>
+#include <plotter/HeadController.hpp>
+#include <bmp/Bmp.hpp>
+#include <display/Display.hpp>
+#include <color/ColorScaler.hpp>
+
 #include "PixelProcessor.hpp"
 
 class PrinterJob {

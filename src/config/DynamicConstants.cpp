@@ -1,8 +1,8 @@
 #include "DynamicConstants.hpp"
 
-#include "../sd_card/Storage.hpp"
-#include "../utils/string_trim.hpp"
-#include "../debug/DebugMessage.hpp"
+#include <sd_card/Storage.hpp>
+#include <utils/string_trim.hpp>
+#include <debug/DebugMessage.hpp>
 
 std::shared_ptr<DynamicConstants> DynamicConstants::instance;
 

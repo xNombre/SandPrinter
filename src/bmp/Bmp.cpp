@@ -1,8 +1,9 @@
 #include "Bmp.hpp"
 
 #include <string.h>
-#include "../debug/ErrorHandler.hpp"
-#include "../debug/DebugMessage.hpp"
+
+#include <debug/ErrorHandler.hpp>
+#include <debug/DebugMessage.hpp>
 namespace Constant
 {
     const dword bmp_signature = 0x4D42;

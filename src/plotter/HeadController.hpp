@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "../motor/Motor.hpp"
-#include "../config/DynamicConstants.hpp"
+#include <motor/Motor.hpp>
+#include <config/DynamicConstants.hpp>
 
 class HeadController;
 using HeadControllerInstance = std::shared_ptr<HeadController>;
