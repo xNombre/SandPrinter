@@ -16,6 +16,9 @@ public:
     
     File(FIL &&file);
     ~File();
+    File(const File &file) = delete;
+    File &operator=(const File &file) = delete;
+    File(File &&file);
 
     // Buffer stands for the maximum lenght of a line to be read
     std::string read_line(const uint32_t buffer = 256);

@@ -36,3 +36,14 @@ void PixelProcessor::paint_pixel(const rgb &pixel)
     }
     brush_controller.wait_for_motors();
 }
+
+bool PixelProcessor::is_pixel_interesting(const rgb &pixel)
+{
+    for (uint8_t i = 0; i < brush_scalers.size(); i++) {
+        if (brush_scalers[i].is_sensitive_to(pixel)) {
+            return true;
+        }
+    }
+
+    return false;
+}

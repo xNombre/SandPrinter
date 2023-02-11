@@ -1,5 +1,7 @@
 #include "File.hpp"
 
+#include "../debug/DebugMessage.hpp"
+
 File::File(FIL &&file)
     : file(std::move(file))
 {
@@ -10,6 +12,12 @@ File::~File()
 {
     flush();
     f_close(&file);
+}
+
+File::File(File &&file)
+{
+    this->file = file.file;
+    file.file = FIL();
 }
 
 uint32_t File::get_size()
@@ -41,6 +49,7 @@ std::vector<uint8_t> File::read(const uint32_t size)
     auto result = f_read(&file, arr.data(), size, &read_bytes);
     
     if (result != FR_OK) {
+        print(MessageType::WARN, "Failed to read file, result: " + std::to_string(int(result)));
         return {};
     }
     if (read_bytes != size) {

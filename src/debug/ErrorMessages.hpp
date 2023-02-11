@@ -9,7 +9,8 @@ enum class ErrorMessage {
     INVALID_CONFIG,
     AXIS_BOUND_REACHED,
     NO_IMAGE_FILES,
-    IMAGE_FORMAT_UNSUPPORTED
+    IMAGE_FORMAT_UNSUPPORTED,
+    BUFFER_REFILL_ERROR
 };
 
 const inline std::map<ErrorMessage, std::string> error_messages_map = {
@@ -20,5 +21,6 @@ const inline std::map<ErrorMessage, std::string> error_messages_map = {
     {ErrorMessage::INVALID_CONFIG,           "Config invalid"},
     {ErrorMessage::AXIS_BOUND_REACHED,       "Axis bound error"},
     {ErrorMessage::NO_IMAGE_FILES,           "No files found"},
-    {ErrorMessage::IMAGE_FORMAT_UNSUPPORTED, "File unsupported"}
+    {ErrorMessage::IMAGE_FORMAT_UNSUPPORTED, "File unsupported"},
+    {ErrorMessage::BUFFER_REFILL_ERROR,      "Buf refill error"}
 };

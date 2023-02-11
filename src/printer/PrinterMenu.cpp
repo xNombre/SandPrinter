@@ -32,13 +32,13 @@ void PrinterMenu::enter_menu()
             if (!file_opt)
                 fatal_error("No file selected");
 
-            status_led->set_status(StatusLed::LedMode::BLINK_FAST);
             auto ret = printer_job.prepare_job(file_opt.value());
             if (!ret)
                 fatal_error("Image read failed!");
 
             status_led->set_status(StatusLed::LedMode::BLINK_SLOW);
             printer_job.start_job();
+            status_led->set_status(StatusLed::LedMode::OFF);
             break;
         }
         case Entry::AUTOPOS: {

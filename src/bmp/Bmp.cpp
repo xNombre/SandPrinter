@@ -12,12 +12,12 @@ namespace Constant
     const size_t max_buffer_size = 200 * 1024; // 200KB
 }
 
-const size_t Bmp::default_buf_size = 200;//16 * 1024; // 16KB
+const size_t Bmp::default_buf_size = 16 * 1024; // 16KB
 
 Bmp::Bmp(File &&file, ReadingOrder order, size_t buffer_size)
     : file(std::move(file)),
       order(order),
-    buffer_size(buffer_size)
+     buffer_size(buffer_size)
 { }
 
 bool Bmp::check_bmp_header(const bmp_structures::bitmap_header &header)
@@ -68,6 +68,7 @@ bool Bmp::load_file()
     height = info.image_height;
     width = info.image_width;
     pixels = height * width;
+    remaining_size = info.image_size;
 
     bytes_per_width = width * sizeof(bmp_structures::pixel);
     
@@ -114,11 +115,11 @@ bool Bmp::eof() const
     return pixels == pixels_read;
 }
 
-rgb Bmp::get_next_pixel()
+Pixel Bmp::get_next_pixel()
 {
     if (pixels_read >= pixels) {
         // eof, return empty
-        return rgb();
+        return Pixel();
     }
 
     pixels_read++;
@@ -130,8 +131,11 @@ rgb Bmp::get_next_pixel()
     else if (order == ReadingOrder::FIRST_TO_LAST) {
         positive_order = true;
     }
-    
-    return read_in_order(positive_order).get_rgb();
+
+    auto color = read_in_order(positive_order).get_rgb();
+    auto position = get_current_pixel_position();
+
+    return Pixel(color, position.x, position.y);
 }
 
 bmp_structures::pixel Bmp::read_in_order(bool positive_order)
@@ -164,10 +168,16 @@ bmp_structures::pixel Bmp::read_in_order(bool positive_order)
 bool Bmp::refill_buffer()
 {
     buffer.clear();
-    auto data = file.read(buffer_size);
 
-    if (data.empty())
-        fatal_error("refill buf fail!");
+    auto bytes_to_read = std::min(buffer_size, remaining_size);
+    remaining_size -= bytes_to_read;
+
+    print(MessageType::INFO, "Refill buffer, read: " + std::to_string(bytes_to_read) + "bytes, remaining_size: " + std::to_string(remaining_size));
+    auto data = file.read(bytes_to_read);
+
+    if (data.empty() || data.size() != bytes_to_read) {
+        fatal_error(ErrorMessage::BUFFER_REFILL_ERROR);
+    }
 
     buffer_position = 0;
     buffer = std::move(data);

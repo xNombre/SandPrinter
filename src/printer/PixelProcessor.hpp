@@ -17,6 +17,7 @@ public:
     bool init_ok();
 
     void paint_pixel(const rgb &pixel);
+    bool is_pixel_interesting(const rgb &pixel);
 
 private:
     BrushController brush_controller;

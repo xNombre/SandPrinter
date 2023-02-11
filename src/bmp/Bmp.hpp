@@ -8,6 +8,7 @@
 #include "../color/ColorModels.hpp"
 
 #include "bmp_structs.hpp"
+#include "Pixel.hpp"
 
 class Bmp {
     static const size_t default_buf_size;
@@ -17,9 +18,6 @@ public:
         ZIGZAG,
         FIRST_TO_LAST,
         LAST_TO_FIRST
-    };
-    struct pixel_position {
-        uint32_t x, y;
     };
 
     Bmp(File &&file,
@@ -32,8 +30,7 @@ public:
     size_t get_height() const;
 
     bool eof() const;
-    rgb get_next_pixel();
-    pixel_position get_current_pixel_position() const;
+    Pixel get_next_pixel();
 
 private:
     ReadingOrder order;
@@ -48,13 +45,19 @@ private:
 
     size_t cur_width = 0;
 
-    File &&file;
+    File file;
 
     size_t buffer_size;
     std::vector<uint8_t> buffer;
     size_t buffer_position = 0;
     size_t pixels_read = 0;
+    size_t remaining_size;
 
+    struct pixel_position {
+        uint32_t x, y;
+    };
+
+    pixel_position get_current_pixel_position() const;
     bool refill_buffer();
     bmp_structures::pixel read_pixel_from_buffer();
     bmp_structures::pixel read_in_order(bool positive_order);

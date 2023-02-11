@@ -19,6 +19,7 @@ public:
     ~ColorScaler() = default;
 
     uint32_t process_color(const rgb &pixel) const;
+    bool is_sensitive_to(const rgb &pixel) const;
 
 private:
     const Sensitivity sensitivity;

@@ -8,6 +8,7 @@
 #include "../config/Constants.hpp"
 #include "../debug/ErrorHandler.hpp"
 #include "../leds/StatusLed.hpp"
+#include "../debug/DebugMessage.hpp"
 
 namespace Constant
 {
@@ -67,19 +68,36 @@ bool PrinterJob::start_job()
         debug_view = !debug_view;
     });
 
+    bool pixel_was_skipped = false;
     while (!image->eof()) {
         const auto &pixel = image->get_next_pixel();
-        const auto &new_pos = image->get_current_pixel_position();
 
-        debug_message = DisplayMessages::Debug::get(new_pos.x, new_pos.y, 0, 0, pixel.r, pixel.g, pixel.b);
+        if (!pixel_processor.is_pixel_interesting(pixel.color)) {
+            print(MessageType::LOG, "Skipping pixel: X" + std::to_string(pixel.x) + "Y" + std::to_string(pixel.y));
+            pixel_was_skipped = true;
+            continue;
+        }
+        
+        debug_message = DisplayMessages::Debug::get(pixel.x, pixel.y, 0, 0, pixel.color.r, pixel.color.g, pixel.color.b);
         status_message = DisplayMessages::PrintProgress::get(finished_pixels, all_pixels);
         MessagePrinter::print_message(debug_view ? debug_message : status_message);
-        
-        pixel_processor.paint_pixel(pixel);
 
-        auto position_status = head_controller->goto_position(new_pos.x * pixel_size, new_pos.y * pixel_size);
+        if (pixel_was_skipped) {
+            head_controller->set_mode(HeadController::MotorMode::FREE);
+        }
+        
+        print(MessageType::LOG, "Move head to: X" + std::to_string(pixel.x) + "Y" + std::to_string(pixel.y));
+        auto position_status = head_controller->goto_position(pixel.x * pixel_size, pixel.y * pixel_size);
         if (!position_status)
             fatal_error("goto_position failed");
+
+        if (pixel_was_skipped) {
+            head_controller->set_mode(HeadController::MotorMode::DUTY);
+            pixel_was_skipped = false;
+        }
+        
+        print(MessageType::LOG, "Paint color: R" + std::to_string(pixel.color.r) + "G" + std::to_string(pixel.color.g) + "B" + std::to_string(pixel.color.b));
+        pixel_processor.paint_pixel(pixel.color);
 
         finished_pixels++;
     }

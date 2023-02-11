@@ -15,7 +15,12 @@ uint32_t ColorScaler::process_color(const rgb &pixel) const
     return scale_color(color);
 }
 
-uint8_t ColorScaler::get_sensitive_color(const rgb& pixel) const {
+bool ColorScaler::is_sensitive_to(const rgb &pixel) const {
+    return get_sensitive_color(pixel);
+}
+
+uint8_t ColorScaler::get_sensitive_color(const rgb &pixel) const
+{
     uint8_t color;
 
     switch (sensitivity) {

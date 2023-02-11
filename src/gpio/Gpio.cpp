@@ -20,7 +20,7 @@ Gpio::Gpio(uint8_t port, Direction dir, PullResistor pull)
 
 Gpio::~Gpio()
 {
-    if(!gpio_moved)
+    if (!gpio_moved)
         gpio_deinit(port);
 }
 
