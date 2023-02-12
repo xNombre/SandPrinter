@@ -11,8 +11,6 @@
 #include "Pixel.hpp"
 
 class Bmp {
-    static const size_t default_buf_size;
-
 public:
     enum class ReadingOrder {
         ZIGZAG,
@@ -20,48 +18,47 @@ public:
         LAST_TO_FIRST
     };
 
-    Bmp(File &&file,
-        ReadingOrder order = ReadingOrder::FIRST_TO_LAST,
-        size_t buffer_size = default_buf_size);
+    Bmp(File &&file, ReadingOrder order);
 
     bool load_file();
 
     size_t get_width() const;
     size_t get_height() const;
 
-    bool eof() const;
     Pixel get_next_pixel();
+    size_t get_current_x() const;
+    size_t get_current_y() const;
+
+    bool eof() const;
 
 private:
     ReadingOrder order;
+    File file;
 
     size_t height;
     size_t width;
-    size_t pixels; // height * width
+    size_t pixels;
 
-    // BMP is 4 bytes aligned
     uint8_t padding_bytes;
     size_t bytes_per_width;
+    size_t bytes_per_width_with_padding;
 
-    size_t cur_width = 0;
-
-    File file;
+    size_t cur_width;
+    size_t pixels_read;
 
     size_t buffer_size;
     std::vector<uint8_t> buffer;
-    size_t buffer_position = 0;
-    size_t pixels_read = 0;
+    size_t buffer_position;
     size_t remaining_size;
 
-    struct pixel_position {
-        uint32_t x, y;
-    };
+    bool current_reading_order;
 
-    pixel_position get_current_pixel_position() const;
+    bool prepare_buffer_size();
     bool refill_buffer();
+
     bmp_structures::pixel read_pixel_from_buffer();
-    bmp_structures::pixel read_in_order(bool positive_order);
-    void handle_width_alignment();
+    bmp_structures::pixel read_next_pixel_in_order();
+
     bool check_bmp_header(const bmp_structures::bitmap_header &header);
     bool check_bmp_info(const bmp_structures::bitmap_info &info);
 };

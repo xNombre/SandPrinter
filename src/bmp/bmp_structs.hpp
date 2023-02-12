@@ -9,8 +9,7 @@ using word = uint16_t;
 using dword = uint32_t;
 using qword = uint64_t;
 
-class bmp_structures {
-public:
+namespace bmp_structures {
     struct bitmap_header
     {
         word signature;
@@ -35,7 +34,7 @@ public:
         hword green;
         hword red;
 
-        rgb get_rgb()
+        operator rgb() const
         {
             return rgb(red, green, blue);
         }
