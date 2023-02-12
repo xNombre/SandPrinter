@@ -30,7 +30,7 @@ Button::~Button()
     irq_set_enabled(IO_IRQ_BANK0, false);
 
     while (alarm_id != 0) {
-        busy_wait_ms(1);
+        busy_wait_us(1);
     }
 
     gpio_to_instance_map.erase(gpio);
