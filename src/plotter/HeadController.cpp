@@ -20,10 +20,10 @@ HeadControllerInstance HeadController::get_instance()
 }
 
 HeadController::HeadController()
-    : x_axis_motor(Gpio(Constants::MOTOR_DIR_X_GPIO, Gpio::Direction::OUT),
-                         Gpio(Constants::MOTOR_STEP_X_GPIO, Gpio::Direction::OUT)),
-      y_axis_motor(Gpio(Constants::MOTOR_DIR_Y_GPIO, Gpio::Direction::OUT),
-                       Gpio(Constants::MOTOR_STEP_Y_GPIO, Gpio::Direction::OUT))
+    : x_axis_motor(Gpio(StaticConstants::MOTOR_DIR_X_GPIO, Gpio::Direction::OUT),
+                         Gpio(StaticConstants::MOTOR_STEP_X_GPIO, Gpio::Direction::OUT)),
+      y_axis_motor(Gpio(StaticConstants::MOTOR_DIR_Y_GPIO, Gpio::Direction::OUT),
+                       Gpio(StaticConstants::MOTOR_STEP_Y_GPIO, Gpio::Direction::OUT))
 {
     auto dynamic_config = DynamicConstants::get_instance();
 
@@ -38,8 +38,8 @@ HeadController::HeadController()
 
 bool HeadController::autoposition_axes()
 {
-    return autoposition_axis(x_axis_motor, Constants::LIMIT_SWITCH_X_GPIO) &&
-           autoposition_axis(y_axis_motor, Constants::LIMIT_SWITCH_Y_GPIO);
+    return autoposition_axis(x_axis_motor, StaticConstants::LIMIT_SWITCH_X_GPIO) &&
+           autoposition_axis(y_axis_motor, StaticConstants::LIMIT_SWITCH_Y_GPIO);
 }
 
 bool HeadController::autoposition_axis(Motor<> &axis_motor, const uint8_t axis_switch_gpio)

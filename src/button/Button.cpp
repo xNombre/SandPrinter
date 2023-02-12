@@ -10,6 +10,7 @@ std::map<uint8_t, Button *> Button::gpio_to_instance_map;
 namespace Constant
 {
     const uint32_t button_irq_event_mask = GPIO_IRQ_EDGE_FALL;
+    const uint8_t button_debounce_ms = 150;
 }
 
 Button::Button(uint8_t gpio)
@@ -67,7 +68,7 @@ void Button::handle_irq(uint gpio, uint32_t event)
             instance->event_callback();
     }
 
-    instance->alarm_id = add_alarm_in_ms(Constants::BUTTON_DEBOUNCE_MS, enable_button, instance, false);
+    instance->alarm_id = add_alarm_in_ms(Constant::button_debounce_ms, enable_button, instance, false);
 }
 
 int64_t Button::enable_button(alarm_id_t alarm_id, void *user_data)
@@ -75,7 +76,7 @@ int64_t Button::enable_button(alarm_id_t alarm_id, void *user_data)
     auto instance = (Button *)user_data;
 
     if (!gpio_get(instance->gpio))
-        return Constants::BUTTON_DEBOUNCE_MS;
+        return Constant::button_debounce_ms;
 
     instance->alarm_id = 0;
     gpio_set_irq_enabled(instance->gpio, Constant::button_irq_event_mask, true);

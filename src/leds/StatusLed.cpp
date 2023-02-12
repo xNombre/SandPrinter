@@ -11,7 +11,7 @@ namespace Constant
 }
 
 StatusLed::StatusLed()
-    : led_gpio(Constants::STATUS_LED_GPIO, Gpio::Direction::OUT),
+    : led_gpio(StaticConstants::STATUS_LED_GPIO, Gpio::Direction::OUT),
     mode(LedMode::OFF)
 {
 }

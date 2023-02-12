@@ -2,7 +2,7 @@
 
 #include <utility>
 
-namespace Constants
+namespace Constant
 {
     const uint8_t set_pin_delay_us = 5;
     const uint32_t us_in_s = 1'000'000;
@@ -16,7 +16,7 @@ Motor<DirGpioType>::Motor(DirGpioType &&direction_pin, Gpio &&step_pin)
     step_pin(std::move(step_pin))
 {
     sem_init(&sem, 1, 1);
-    set_motor_speed(Constants::default_motor_speed);
+    set_motor_speed(Constant::default_motor_speed);
 }
 
 template <typename DirGpioType>
@@ -28,10 +28,10 @@ Motor<DirGpioType>::~Motor()
 template <typename DirGpioType>
 void Motor<DirGpioType>::set_motor_speed(uint32_t steps_per_s)
 {
-    if (steps_per_s > Constants::max_steps_per_s)
-        steps_per_s = Constants::max_steps_per_s;
+    if (steps_per_s > Constant::max_steps_per_s)
+        steps_per_s = Constant::max_steps_per_s;
         
-    step_wait_us = Constants::us_in_s / steps_per_s;
+    step_wait_us = Constant::us_in_s / steps_per_s;
 }
 
 template <typename DirGpioType>
@@ -118,7 +118,7 @@ template <typename DirGpioType>
 void Motor<DirGpioType>::send_pulse(Gpio &gpio)
 {
     gpio.set_state(true);
-    busy_wait_us(Constants::set_pin_delay_us);
+    busy_wait_us(Constant::set_pin_delay_us);
     gpio.set_state(false);
-    busy_wait_us(Constants::set_pin_delay_us);
+    busy_wait_us(Constant::set_pin_delay_us);
 }

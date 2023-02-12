@@ -7,8 +7,8 @@
 DisplayInstance Display::instance;
 
 Display::Display()
-    : sda_gpio(Constants::DISPLAY_SDA_GPIO),
-      scl_gpio(Constants::DISPLAY_SCL_GPIO)
+    : sda_gpio(StaticConstants::DISPLAY_SDA_GPIO),
+      scl_gpio(StaticConstants::DISPLAY_SCL_GPIO)
 {
     lcd_init(sda_gpio, scl_gpio);
 }

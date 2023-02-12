@@ -41,9 +41,9 @@ std::string FileSelector::get_user_selection()
     file_list_iterator_t current_selection = file_list.begin();
     auto last_selection = current_selection;
 
-    Button up(Constants::BUTTON_UP_GPIO);
-    Button ok(Constants::BUTTON_OK_GPIO);
-    Button down(Constants::BUTTON_DOWN_GPIO);
+    Button up(StaticConstants::BUTTON_UP_GPIO);
+    Button ok(StaticConstants::BUTTON_OK_GPIO);
+    Button down(StaticConstants::BUTTON_DOWN_GPIO);
 
     up.set_callback([&] {
         if (current_selection == file_list.begin())

@@ -58,7 +58,7 @@ bool PrinterJob::prepare_job(const std::string &filename)
 bool PrinterJob::start_job()
 {
     DisplayMessages::message_list status_message, debug_message;
-    Button detailed_info_button(Constants::BUTTON_DOWN_GPIO);
+    Button detailed_info_button(StaticConstants::BUTTON_DOWN_GPIO);
     uint32_t finished_pixels = 0, all_pixels;
     bool debug_view = false;
 

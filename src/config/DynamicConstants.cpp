@@ -6,7 +6,7 @@
 
 std::shared_ptr<DynamicConstants> DynamicConstants::instance;
 
-namespace Constants
+namespace Constant
 {
     const std::string config_file_name = "config.txt";
     const std::string enabled_option = "1";
@@ -29,10 +29,10 @@ bool DynamicConstants::load_constants()
 {
     auto sd_card = Storage::get_instance();
 
-    if (!sd_card->file_exists(Constants::config_file_name))
+    if (!sd_card->file_exists(Constant::config_file_name))
         return false;
 
-    auto ret = sd_card->open_file(Constants::config_file_name, File::Mode::READ);
+    auto ret = sd_card->open_file(Constant::config_file_name, File::Mode::READ);
     if (!ret)
         return false;
 
@@ -47,10 +47,10 @@ bool DynamicConstants::read_config_file(File &file)
     while (!file.eof()) {
         auto line = file.read_line();
 
-        if (line.empty() || line[0] == Constants::comment_indicator)
+        if (line.empty() || line[0] == Constant::comment_indicator)
             continue;
 
-        auto option_end = line.find(Constants::option_equals);
+        auto option_end = line.find(Constant::option_equals);
         if (option_end == std::string::npos)
             continue;
 
@@ -105,7 +105,7 @@ std::optional<int64_t> DynamicConstants::get_value_int(Option param)
 bool DynamicConstants::get_value_bool(Option param)
 {
     auto value = get_value(param);
-    if (value && value.value() == Constants::enabled_option)
+    if (value && value.value() == Constant::enabled_option)
         return true;
 
     return false;

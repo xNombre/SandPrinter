@@ -22,9 +22,9 @@ private:
     uint32_t paint_delay_ms;
 
     const std::vector<std::pair<DynamicConstants::Option, uint8_t>> brush_list = {
-        {DynamicConstants::Option::BRUSH_1_COLOR, Constants::MOTOR_BRUSH1_GPIO},
-        {DynamicConstants::Option::BRUSH_2_COLOR, Constants::MOTOR_BRUSH2_GPIO},
-        {DynamicConstants::Option::BRUSH_3_COLOR, Constants::MOTOR_BRUSH3_GPIO},
-        {DynamicConstants::Option::BRUSH_4_COLOR, Constants::MOTOR_BRUSH4_GPIO}
+        {DynamicConstants::Option::BRUSH_1_COLOR, StaticConstants::MOTOR_BRUSH1_GPIO},
+        {DynamicConstants::Option::BRUSH_2_COLOR, StaticConstants::MOTOR_BRUSH2_GPIO},
+        {DynamicConstants::Option::BRUSH_3_COLOR, StaticConstants::MOTOR_BRUSH3_GPIO},
+        {DynamicConstants::Option::BRUSH_4_COLOR, StaticConstants::MOTOR_BRUSH4_GPIO}
     };
 };

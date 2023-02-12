@@ -61,11 +61,11 @@ auto PrinterMenu::get_option_for_user() -> Entry
     auto last_option = current_option;
     bool user_input_event_select = false;
 
-    Button up(Constants::BUTTON_UP_GPIO);
+    Button up(StaticConstants::BUTTON_UP_GPIO);
     up.set_callback([&] {current_option--;});
-    Button ok(Constants::BUTTON_OK_GPIO);
+    Button ok(StaticConstants::BUTTON_OK_GPIO);
     ok.set_callback([&] {user_input_event_select = true;});
-    Button down(Constants::BUTTON_DOWN_GPIO);
+    Button down(StaticConstants::BUTTON_DOWN_GPIO);
     down.set_callback([&] {current_option++;});
 
     while (!user_input_event_select) {

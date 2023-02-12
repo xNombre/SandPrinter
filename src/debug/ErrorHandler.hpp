@@ -17,9 +17,9 @@ const inline uint32_t all_irq_levels = GPIO_IRQ_LEVEL_LOW | GPIO_IRQ_LEVEL_HIGH 
 static void fatal_error(const std::string &msg)
 {
     irq_set_mask_enabled(irqs_to_mask, false);
-    gpio_set_irq_enabled(Constants::BUTTON_DOWN_GPIO, all_irq_levels, false);
-    gpio_set_irq_enabled(Constants::BUTTON_OK_GPIO, all_irq_levels, false);
-    gpio_set_irq_enabled(Constants::BUTTON_UP_GPIO, all_irq_levels, false);
+    gpio_set_irq_enabled(StaticConstants::BUTTON_DOWN_GPIO, all_irq_levels, false);
+    gpio_set_irq_enabled(StaticConstants::BUTTON_OK_GPIO, all_irq_levels, false);
+    gpio_set_irq_enabled(StaticConstants::BUTTON_UP_GPIO, all_irq_levels, false);
     
     auto display_instance = Display::get_instance();
     display_instance->clear();
@@ -34,9 +34,9 @@ static void fatal_error(const std::string &msg)
 static void fatal_error(ErrorMessage message)
 {
     irq_set_mask_enabled(irqs_to_mask, false);
-    gpio_set_irq_enabled(Constants::BUTTON_DOWN_GPIO, all_irq_levels, false);
-    gpio_set_irq_enabled(Constants::BUTTON_OK_GPIO, all_irq_levels, false);
-    gpio_set_irq_enabled(Constants::BUTTON_UP_GPIO, all_irq_levels, false);
+    gpio_set_irq_enabled(StaticConstants::BUTTON_DOWN_GPIO, all_irq_levels, false);
+    gpio_set_irq_enabled(StaticConstants::BUTTON_OK_GPIO, all_irq_levels, false);
+    gpio_set_irq_enabled(StaticConstants::BUTTON_UP_GPIO, all_irq_levels, false);
 
     const auto &error_msg = error_messages_map.at(message);
     print(MessageType::ERR, error_msg);

@@ -51,8 +51,8 @@ const int LCD_ENABLE_BIT = 0x04;
 const int LCD_CHARACTER = 1;
 const int LCD_COMMAND = 0;
 
-const uint8_t lcd_addr = Constants::DISPLAY_I2C_ADDRESS;
-i2c_inst_t* const i2c_port = Constants::DISPLAY_I2C_PORT;
+const uint8_t lcd_addr = StaticConstants::DISPLAY_I2C_ADDRESS;
+i2c_inst_t* const i2c_port = StaticConstants::DISPLAY_I2C_PORT;
 
 //
 // Functions

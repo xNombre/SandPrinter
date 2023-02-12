@@ -31,19 +31,19 @@ private:
     };
 
     const std::vector<brush> brush_list = {
-        {Constants::MOTOR_BRUSH1_GPIO,
+        {StaticConstants::MOTOR_BRUSH1_GPIO,
         DynamicConstants::Option::BRUSH_1_COLOR,
         DynamicConstants::Option::BRUSH_1_COEFF,
         DynamicConstants::Option::BRUSH_1_CONST},
-        {Constants::MOTOR_BRUSH2_GPIO,
+        {StaticConstants::MOTOR_BRUSH2_GPIO,
         DynamicConstants::Option::BRUSH_2_COLOR,
         DynamicConstants::Option::BRUSH_2_COEFF,
         DynamicConstants::Option::BRUSH_2_CONST},
-        {Constants::MOTOR_BRUSH3_GPIO,
+        {StaticConstants::MOTOR_BRUSH3_GPIO,
         DynamicConstants::Option::BRUSH_3_COLOR,
         DynamicConstants::Option::BRUSH_3_COEFF,
         DynamicConstants::Option::BRUSH_3_CONST},
-        {Constants::MOTOR_BRUSH4_GPIO,
+        {StaticConstants::MOTOR_BRUSH4_GPIO,
         DynamicConstants::Option::BRUSH_4_COLOR,
         DynamicConstants::Option::BRUSH_4_COEFF,
         DynamicConstants::Option::BRUSH_4_CONST},

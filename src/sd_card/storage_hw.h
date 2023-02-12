@@ -10,10 +10,10 @@ void spi0_dma_isr();
 
 static spi_t spis[] = {
     {
-        .hw_inst = Constants::CARD_READER_SPI_PORT,
-        .miso_gpio = Constants::CARD_READER_MISO_GPIO,
-        .mosi_gpio = Constants::CARD_READER_MOSI_GPIO,
-        .sck_gpio = Constants::CARD_READER_SCLK_GPIO,
+        .hw_inst = StaticConstants::CARD_READER_SPI_PORT,
+        .miso_gpio = StaticConstants::CARD_READER_MISO_GPIO,
+        .mosi_gpio = StaticConstants::CARD_READER_MOSI_GPIO,
+        .sck_gpio = StaticConstants::CARD_READER_SCLK_GPIO,
 
         .baud_rate = 12500 * 1000,
         .dma_isr = spi0_dma_isr
@@ -24,7 +24,7 @@ static sd_card_t sd_cards[] = {
     {
         .pcName = "0:",
         .spi = &spis[0],
-        .ss_gpio = Constants::CARD_READER_CS_GPIO,
+        .ss_gpio = StaticConstants::CARD_READER_CS_GPIO,
         .use_card_detect = false,
         .m_Status = STA_NOINIT
     }

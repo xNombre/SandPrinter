@@ -4,7 +4,7 @@
 
 #include <config/DynamicConstants.hpp>
 
-namespace Constants
+namespace Constant
 {
     const uint32_t rough_steps_per_iteration = 3;
     const uint32_t precise_steps_per_iteration = 1;
@@ -13,7 +13,7 @@ namespace Constants
 }
 
 Autoposition::Autoposition(Motor<> &motor, const uint8_t axis_switch_gpio)
-    : motor(motor), axis_switch(axis_switch_gpio, Gpio::Direction::IN, Constants::axis_switch_pull_mode)
+    : motor(motor), axis_switch(axis_switch_gpio, Gpio::Direction::IN, Constant::axis_switch_pull_mode)
 {
 }
 
@@ -40,13 +40,13 @@ void __time_critical_func(Autoposition::do_switch_pingpong)()
     motor.set_direction(Motor<>::Direction::DEC);
     
     while (!axis_switch.get_state()) {
-        motor.do_steps_blocking(Constants::rough_steps_per_iteration);
+        motor.do_steps_blocking(Constant::rough_steps_per_iteration);
     }
 
     motor.set_direction(Motor<>::Direction::INC);
 
     while (axis_switch.get_state()) {
-        motor.do_steps_blocking(Constants::precise_steps_per_iteration);
-        sleep_us(Constants::precise_wait_us);
+        motor.do_steps_blocking(Constant::precise_steps_per_iteration);
+        sleep_us(Constant::precise_wait_us);
     }
 }
