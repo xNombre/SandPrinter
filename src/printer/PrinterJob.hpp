@@ -16,9 +16,11 @@ public:
     ~PrinterJob() = default;
 
     bool prepare_job(const std::string &filename);
+    bool display_confirmation() const;
     bool start_job();
 
 private:
+    std::string filename;
     BrushController brush_controller;
     HeadControllerInstance head_controller;
     PixelProcessor pixel_processor;

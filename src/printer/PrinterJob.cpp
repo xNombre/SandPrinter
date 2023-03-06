@@ -45,6 +45,7 @@ bool PrinterJob::prepare_job(const std::string &filename)
     if (!file)
         return false;
 
+    this->filename = filename;
     image = std::make_unique<Bmp>(std::move(file.value()), Bmp::ReadingOrder::ZIGZAG);
 
     auto load_img = image->load_file();
@@ -61,9 +62,30 @@ bool PrinterJob::prepare_job(const std::string &filename)
     return true;
 }
 
+bool PrinterJob::display_confirmation() const
+{
+    bool result_ready = false, result = false;
+    Button ok_button(StaticConstants::BUTTON_OK_GPIO);
+    Button nok_button(StaticConstants::BUTTON_UP_GPIO);
+    ok_button.set_callback([&] {
+        result_ready = true;
+        result = true;
+    });
+    nok_button.set_callback([&] {
+        result_ready = true;
+     });
+
+    auto message = DisplayMessages::PrintConfirm::get(filename, image->get_width(), image->get_height());
+    MessagePrinter::print_message(message);
+
+    while (!result_ready)
+        __wfi();
+
+    return result;
+}
+
 bool PrinterJob::start_job()
 {
-    DisplayMessages::message_list status_message, debug_message;
     Button detailed_info_button(StaticConstants::BUTTON_DOWN_GPIO);
     uint32_t finished_pixels = 0, all_pixels;
     bool debug_view = false;
@@ -83,10 +105,14 @@ bool PrinterJob::start_job()
             pixel_was_skipped = true;
             continue;
         }
-        
-        debug_message = DisplayMessages::Debug::get(pixel.x, pixel.y, 0, 0, pixel.color.r, pixel.color.g, pixel.color.b);
-        status_message = DisplayMessages::PrintProgress::get(finished_pixels, all_pixels);
-        MessagePrinter::print_message(debug_view ? debug_message : status_message);
+
+        DisplayMessages::message_list message;
+        if (debug_view)
+            message = DisplayMessages::Debug::get(pixel.x, pixel.y, pixel.color.r, pixel.color.g, pixel.color.b, finished_pixels, all_pixels);
+        else
+            message = DisplayMessages::PrintProgress::get(finished_pixels, all_pixels);
+    
+        MessagePrinter::print_message(message);
 
         if (pixel_was_skipped) {
             head_controller->set_mode(HeadController::MotorMode::FREE);

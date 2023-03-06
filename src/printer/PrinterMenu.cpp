@@ -33,8 +33,14 @@ void PrinterMenu::enter_menu()
                 fatal_error("No file selected");
 
             auto ret = printer_job.prepare_job(file_opt.value());
-            if (!ret)
+            if (!ret) {
                 fatal_error("Image read failed!");
+            }
+
+            ret = printer_job.display_confirmation();
+            if (!ret) {
+                continue;
+            }
 
             status_led->set_status(StatusLed::LedMode::BLINK_SLOW);
             printer_job.start_job();
