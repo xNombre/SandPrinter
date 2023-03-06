@@ -3,6 +3,7 @@
 #include <utility>
 
 #include <config/Constants.hpp>
+#include <debug/DebugMessage.hpp>
 
 #include "Autoposition.hpp"
 
@@ -53,6 +54,10 @@ bool HeadController::goto_position(uint32_t new_x, uint32_t new_y, bool async)
 {
     if (max_y < new_y || max_x < new_x) {
         return false;
+    }
+
+    if (async) {
+        wait_for_motors();
     }
 
     int64_t steps = (int64_t)new_x - (int64_t)x_pos;
@@ -115,6 +120,8 @@ uint32_t HeadController::get_y() const
 void HeadController::set_mode(MotorMode mode)
 {
     const auto &speed = mode == MotorMode::DUTY ? duty_speed : free_speed;
+
+    print(MessageType::INFO, "Set motors mode: " + std::string(mode == MotorMode::DUTY ? "DUTY" : "FREE"));
 
     x_axis_motor.set_motor_speed(speed);
     y_axis_motor.set_motor_speed(speed);
