@@ -32,6 +32,7 @@ PrinterJob::PrinterJob()
     max_height_px = max_height * pixel_size;
 
     async_print = dynamic_config->get_value_bool(DynamicConstants::Option::ASYNC_PRINT);
+    return_home = dynamic_config->get_value_bool(DynamicConstants::Option::RETURN_TO_HOME_POSITION);
 }
 
 bool PrinterJob::prepare_job(const std::string &filename)
@@ -108,6 +109,12 @@ bool PrinterJob::start_job()
     }
 
     print(MessageType::INFO, "Printer job finished");
+
+    if (return_home) {
+        print(MessageType::INFO, "Returning head to home position...");
+        head_controller->goto_position(0, 0);
+        print(MessageType::INFO, "Done");
+    }
 
     return true;
 }
