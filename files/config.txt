@@ -1,28 +1,43 @@
 # Create logfile
-DEBUG = 1
+DEBUG = 0
+
+# Filter debug messages in stdout
+# 1 - LOG, 2 - INFO, 3 - WARN, 4 - ERROR
+LOG_VERBOSITY = 1
+
+# Don't wait for motors and skip paint delay
+ASYNC_PRINT = 0
+
+# Return to home position after print
+RETURN_TO_HOME_POSITION = 0
 
 # Max height and width in steps
 MAX_HEIGHT = 
 MAX_WIDTH = 
 
-#
-STEPS_PER_PIXEL =  
+# Axis steps between pixels
+STEPS_PER_PIXEL = 
 
-# step / ms
+# Axis motor steps / ms
 DUTY_MOVE_SPEED = 
 FREE_MOVE_SPEED = 
 
-#
+# DIR state in order to move motor to home position
+X_MOTOR_DIR_PIN_HEADING_HOME_WHEN = 
+Y_MOTOR_DIR_PIN_HEADING_HOME_WHEN = 
+
+# Do autopositioning before starting print job
 AUTOPOSITIONING = 
 POSITIONING_PRECISE_SPEED = 
 POSITIONING_ROUGH_SPEED = 
 
-# step / ms
+# Brush motor steps / ms
 BRUSH_MOTOR_SPEED = 
 
 # Time in ms to wait after painting a pixel
 PAINT_DELAY = 
 
+# Brush sensitivity to color
 # Choose one C,M,Y,K,R,G,B,S (grayscale)
 # Leave empty to disable brush
 BRUSH_1_COLOR = 
@@ -31,8 +46,10 @@ BRUSH_3_COLOR =
 BRUSH_4_COLOR = 
 
 # Scale brush motor steps with linear function
+# RGB values are scaled to 0-100 range to match CMYK
 # (COEFF)*X+(CONST) = STEPS
-# Negative numbers allowed
+# X - color value
+# Negative, floating-point values allowed
 BRUSH_1_COEFF = 
 BRUSH_1_CONST = 
 BRUSH_2_COEFF = 
