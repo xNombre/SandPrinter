@@ -28,13 +28,16 @@ bool PixelProcessor::init_ok()
     return brush_scalers.size() > 0;
 }
 
-void PixelProcessor::paint_pixel(const rgb &pixel)
+void PixelProcessor::paint_pixel(const rgb &pixel, bool wait_for_motors)
 {
     for (uint8_t i = 0; i < brush_scalers.size(); i++) {
         auto steps = brush_scalers[i].process_color(pixel);
         brush_controller.paint(i, steps, true);
     }
-    brush_controller.wait_for_motors();
+
+    if (wait_for_motors) {
+        brush_controller.wait_for_motors();
+    }
 }
 
 bool PixelProcessor::is_pixel_interesting(const rgb &pixel)

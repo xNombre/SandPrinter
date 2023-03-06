@@ -16,7 +16,7 @@ public:
 
     bool init_ok();
 
-    void paint_pixel(const rgb &pixel);
+    void paint_pixel(const rgb &pixel, bool wait_for_motors);
     bool is_pixel_interesting(const rgb &pixel);
 
 private:

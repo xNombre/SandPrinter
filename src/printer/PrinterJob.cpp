@@ -21,20 +21,25 @@ PrinterJob::PrinterJob()
     auto dynamic_config = DynamicConstants::get_instance();
 
     auto val = dynamic_config->get_value_int(DynamicConstants::Option::STEPS_PER_PIXEL);
-    if (val)
+    if (val) {
         pixel_size = val.value();
+    }
 
     const auto max_width = dynamic_config->get_value_int(DynamicConstants::Option::MAX_WIDTH).value();
     const auto max_height = dynamic_config->get_value_int(DynamicConstants::Option::MAX_HEIGHT).value();
 
     max_width_px = max_width * pixel_size;
     max_height_px = max_height * pixel_size;
+
+    async_print = dynamic_config->get_value_bool(DynamicConstants::Option::ASYNC_PRINT);
 }
 
 bool PrinterJob::prepare_job(const std::string &filename)
 {
     auto storage_instance = Storage::get_instance();
 
+    print(MessageType::INFO, "Prepare job: " + filename);
+        
     auto file = storage_instance->open_file(Constant::images_location + filename, File::Mode::READ);
     if (!file)
         return false;
@@ -72,7 +77,7 @@ bool PrinterJob::start_job()
     while (!image->eof()) {
         const auto &pixel = image->get_next_pixel();
 
-        if (!pixel_processor.is_pixel_interesting(pixel.color)) {
+        if (!async_print && !pixel_processor.is_pixel_interesting(pixel.color)) {
             print(MessageType::LOG, "Skipping pixel: X" + std::to_string(pixel.x) + "Y" + std::to_string(pixel.y));
             pixel_was_skipped = true;
             continue;
@@ -86,8 +91,8 @@ bool PrinterJob::start_job()
             head_controller->set_mode(HeadController::MotorMode::FREE);
         }
         
-        print(MessageType::LOG, "Move head to: X" + std::to_string(pixel.x) + "Y" + std::to_string(pixel.y));
-        auto position_status = head_controller->goto_position(pixel.x * pixel_size, pixel.y * pixel_size);
+        print(MessageType::INFO, "Move head to: X" + std::to_string(pixel.x) + "Y" + std::to_string(pixel.y));
+        auto position_status = head_controller->goto_position(pixel.x * pixel_size, pixel.y * pixel_size, async_print);
         if (!position_status)
             fatal_error("goto_position failed");
 
@@ -96,11 +101,13 @@ bool PrinterJob::start_job()
             pixel_was_skipped = false;
         }
         
-        print(MessageType::LOG, "Paint color: R" + std::to_string(pixel.color.r) + "G" + std::to_string(pixel.color.g) + "B" + std::to_string(pixel.color.b));
-        pixel_processor.paint_pixel(pixel.color);
+        print(MessageType::INFO, "Paint color: R" + std::to_string(pixel.color.r) + "G" + std::to_string(pixel.color.g) + "B" + std::to_string(pixel.color.b));
+        pixel_processor.paint_pixel(pixel.color, !async_print);
 
         finished_pixels++;
     }
+
+    print(MessageType::INFO, "Printer job finished");
 
     return true;
 }

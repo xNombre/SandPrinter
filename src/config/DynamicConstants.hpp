@@ -35,7 +35,8 @@ public:
         BRUSH_3_COEFF,
         BRUSH_3_CONST,
         BRUSH_4_COEFF,
-        BRUSH_4_CONST
+        BRUSH_4_CONST,
+        ASYNC_PRINT
     };
 
     static std::shared_ptr<DynamicConstants> get_instance();
@@ -75,11 +76,12 @@ private:
         {"BRUSH_1_COEFF", {Option::BRUSH_1_COEFF, true}},
         {"BRUSH_1_CONST", {Option::BRUSH_1_CONST, true}},
         {"BRUSH_2_COEFF", {Option::BRUSH_2_COEFF, false}},
-        {"BRUSH_2_CONST", {Option::BRUSH_2_CONST,false}},
+        {"BRUSH_2_CONST", {Option::BRUSH_2_CONST, false}},
         {"BRUSH_3_COEFF", {Option::BRUSH_3_COEFF, false}},
         {"BRUSH_3_CONST", {Option::BRUSH_3_CONST, false}},
         {"BRUSH_4_COEFF", {Option::BRUSH_4_COEFF, false}},
-        {"BRUSH_4_CONST", {Option::BRUSH_4_CONST, false}}
+        {"BRUSH_4_CONST", {Option::BRUSH_4_CONST, false}},
+        {"ASYNC_PRINT", {Option::ASYNC_PRINT, true}},
     };
 
     std::unordered_map<Option, std::string> param_values = {
