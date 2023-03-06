@@ -36,8 +36,10 @@ bool DynamicConstants::load_constants()
     if (!ret)
         return false;
 
-    // TODO: check if all required options are filled
-    return read_config_file(ret.value());
+    if (!read_config_file(ret.value()))
+        return false;
+
+    return are_required_constants_loaded();
 }
 
 bool DynamicConstants::read_config_file(File &file)
@@ -81,28 +83,28 @@ bool DynamicConstants::read_config_file(File &file)
     return true;
 }
 
-std::optional<std::string> DynamicConstants::get_value(Option param)
+std::optional<std::string> DynamicConstants::get_value(Option param) const
 {
     if (!value_is_available(param))
         return std::nullopt;
 
-    return param_values[param];
+    return param_values.at(param);
 }
 
-bool DynamicConstants::value_is_available(Option param)
+bool DynamicConstants::value_is_available(Option param) const
 {
     return param_values.find(param) != param_values.end();
 }
 
-std::optional<int64_t> DynamicConstants::get_value_int(Option param)
+std::optional<int64_t> DynamicConstants::get_value_int(Option param) const
 {
     if (!value_is_available(param))
         return std::nullopt;
 
-    return std::stoll(param_values[param]);
+    return std::stoll(param_values.at(param));
 }
 
-bool DynamicConstants::get_value_bool(Option param)
+bool DynamicConstants::get_value_bool(Option param) const
 {
     auto value = get_value(param);
     if (value && value.value() == Constant::enabled_option)
@@ -111,10 +113,25 @@ bool DynamicConstants::get_value_bool(Option param)
     return false;
 }
 
-std::optional<double> DynamicConstants::get_value_double(Option param)
+std::optional<double> DynamicConstants::get_value_double(Option param) const
 {
     if (!value_is_available(param))
         return std::nullopt;
 
-    return std::stod(param_values[param]);
+    return std::stod(param_values.at(param));
+}
+
+bool DynamicConstants::are_required_constants_loaded() const {
+    for (const auto &option : option_strings_map) {
+        if (!option.second.second) {
+            continue;
+        }
+
+        if (!value_is_available(option.second.first)) {
+            print(MessageType::WARN, "Required option is nonexistent! -> " + option.first);
+            return false;
+        }
+    }
+
+    return true;
 }
