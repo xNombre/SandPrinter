@@ -124,7 +124,7 @@ bool PrinterJob::start_job()
         print(MessageType::INFO, "Move head to: X" + std::to_string(pixel.x) + "Y" + std::to_string(pixel.y));
         auto position_status = head_controller->goto_position(pixel.x * pixel_size, pixel.y * pixel_size, async_print);
         if (!position_status)
-            fatal_error("goto_position failed");
+            fatal_error(ErrorMessage::AXIS_BOUND_REACHED);
 
         if (pixel_was_skipped) {
             head_controller->set_mode(HeadController::MotorMode::DUTY);

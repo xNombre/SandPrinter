@@ -19,7 +19,7 @@ namespace Constant
 void PrinterMenu::enter_menu()
 {
     auto status_led = StatusLed::get_instance();
-    
+
     while (true) {
         auto option = get_option_for_user();
 
@@ -30,11 +30,11 @@ void PrinterMenu::enter_menu()
 
             auto file_opt = file_sel.enter_menu();
             if (!file_opt)
-                fatal_error("No file selected");
+                fatal_error(ErrorMessage::NO_IMAGE_FILES);
 
             auto ret = printer_job.prepare_job(file_opt.value());
             if (!ret) {
-                fatal_error("Image read failed!");
+                fatal_error(ErrorMessage::IMAGE_FORMAT_UNSUPPORTED);
             }
 
             ret = printer_job.display_confirmation();
