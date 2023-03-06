@@ -30,4 +30,6 @@ private:
     uint32_t max_width_px;
     bool async_print;
     bool return_home;
+
+    void goto_home();
 };

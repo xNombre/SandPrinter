@@ -91,10 +91,13 @@ bool PrinterJob::start_job()
     bool debug_view = false;
 
     all_pixels = image->get_height() * image->get_width();
-    head_controller->set_mode(HeadController::MotorMode::DUTY);
+
     detailed_info_button.set_callback([&] {
         debug_view = !debug_view;
     });
+
+    goto_home();
+    head_controller->set_mode(HeadController::MotorMode::DUTY);
 
     bool pixel_was_skipped = false;
     while (!image->eof()) {
@@ -137,10 +140,15 @@ bool PrinterJob::start_job()
     print(MessageType::INFO, "Printer job finished");
 
     if (return_home) {
-        print(MessageType::INFO, "Returning head to home position...");
-        head_controller->goto_position(0, 0);
-        print(MessageType::INFO, "Done");
+        goto_home();
     }
 
     return true;
+}
+
+void PrinterJob::goto_home()
+{
+    print(MessageType::INFO, "Moving head to home position...");
+    head_controller->set_mode(HeadController::MotorMode::FREE);
+    head_controller->goto_position(0, 0);
 }
