@@ -3,6 +3,7 @@
 #include <pico/time.h>
 
 #include <gpio/Gpio.hpp>
+#include <debug/DebugMessage.hpp>
 
 BrushController::BrushController()
 {
@@ -27,6 +28,10 @@ bool BrushController::paint(uint8_t brush_number, uint8_t steps, bool async)
 {
     if (brushes.size() <= brush_number)
         return false;
+
+    if (steps > 0) {
+        print(MessageType::LOG, "Brush number: " + std::to_string(brush_number) + ", do steps: " + std::to_string(steps));
+    }
 
     if (async) {
         brushes[brush_number].do_steps_async(steps);

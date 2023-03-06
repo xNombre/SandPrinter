@@ -66,6 +66,10 @@ bool HeadController::goto_position(uint32_t new_x, uint32_t new_y, bool async)
         steps = std::abs(steps);
         dir = Motor<>::Direction::DEC;
     }
+    if (steps > 0) {
+        print(MessageType::LOG, "X motor do steps: " + std::to_string(steps));
+    }
+
     move_motor(x_axis_motor, dir, steps, async);
     x_pos = new_x;
 
@@ -74,6 +78,9 @@ bool HeadController::goto_position(uint32_t new_x, uint32_t new_y, bool async)
     if (steps < 0) {
         steps = std::abs(steps);
         dir = Motor<>::Direction::DEC;
+    }
+    if (steps > 0) {
+        print(MessageType::LOG, "Y motor do steps: " + std::to_string(steps));
     }
     move_motor(y_axis_motor, dir, steps, async);
     y_pos = new_y;
