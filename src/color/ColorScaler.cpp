@@ -16,7 +16,8 @@ uint32_t ColorScaler::process_color(const rgb &pixel) const
     return scale_color(color);
 }
 
-bool ColorScaler::is_sensitive_to(const rgb &pixel) const {
+bool ColorScaler::is_sensitive_to(const rgb &pixel) const
+{
     return get_sensitive_color(pixel);
 }
 
@@ -26,15 +27,15 @@ uint8_t ColorScaler::get_sensitive_color(const rgb &pixel) const
 
     switch (sensitivity) {
     case Sensitivity::R: {
-        color = pixel.r;
+        color = scale_rgb_to_percent(pixel.r);
         break;
     }
     case Sensitivity::G: {
-        color = pixel.g;
+        color = scale_rgb_to_percent(pixel.g);
         break;
     }
     case Sensitivity::B: {
-        color = pixel.b;
+        color = scale_rgb_to_percent(pixel.b);
         break;
     }
     case Sensitivity::GRAYSCALE:
@@ -71,5 +72,9 @@ uint8_t ColorScaler::to_grayscale(const rgb &pixel) const
 uint32_t ColorScaler::scale_color(const uint8_t color) const
 {
     auto value = double(color) * coefficient + constant;
-    return double2int64_z(value);
+    return std::round(value);
+}
+
+uint8_t ColorScaler::scale_rgb_to_percent(const uint8_t color) const {
+    return std::round((double)color / 255.0);
 }

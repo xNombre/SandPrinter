@@ -28,5 +28,6 @@ private:
 
     uint8_t to_grayscale(const rgb &pixel) const;
     uint32_t scale_color(const uint8_t color) const;
-    uint8_t get_sensitive_color(const rgb& pixel) const;
+    uint8_t get_sensitive_color(const rgb &pixel) const;
+    uint8_t scale_rgb_to_percent(const uint8_t color) const;
 };
