@@ -76,5 +76,5 @@ uint32_t ColorScaler::scale_color(const uint8_t color) const
 }
 
 uint8_t ColorScaler::scale_rgb_to_percent(const uint8_t color) const {
-    return std::round((double)color / 255.0);
+    return std::round(100.0 * (double)color / 255.0);
 }
